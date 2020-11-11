@@ -6,6 +6,7 @@
     <modules>
         <module>eureka</module>
         <module>system</module>
+        <module>getaway</module>
     </modules>
 
     <parent>

@@ -1,4 +1,4 @@
-package com.xeckass.system.controller;
+package com.course.system.controller;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
