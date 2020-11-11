@@ -21,6 +21,6 @@ public class TestController {
 
     @RequestMapping("/test")
     public List<Test> test(){
-        return null;
+        return testService.list();
     }
 }
