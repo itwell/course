@@ -22,14 +22,16 @@ export default new Router({
             path: "/login",
             component: Login
         }, {
-            path: "/admin",
+            path: "/",
             component: Admin,
             /*admin子页面*/
             children: [{
                 path: 'welcome',
+                name: "welcome",
                 component: Welcome,
             }, {
                     path: 'business/chapter',
+                    name: "chapter",
                     component: Chapter,
                 }
             ]
