@@ -1066,7 +1066,8 @@
     export default {
         name: "chapter",
         mounted: function(){
-            this.$parent.activeSidebar("business-chapter-sidebar");
+            //激活侧边栏状态写法1
+            // this.$parent.activeSidebar("business-chapter-sidebar");
         },
         methods:{
 

@@ -2,7 +2,8 @@
     <div>
         <div id="navbar" class="navbar navbar-default          ace-save-state">
             <div class="navbar-container ace-save-state" id="navbar-container">
-                <button type="button" class="navbar-toggle menu-toggler pull-left" id="menu-toggler" data-target="#sidebar">
+                <button type="button" class="navbar-toggle menu-toggler pull-left" id="menu-toggler"
+                        data-target="#sidebar">
                     <span class="sr-only">Toggle sidebar</span>
 
                     <span class="icon-bar"></span>
@@ -58,7 +59,8 @@
                                                 </div>
 
                                                 <div class="progress progress-mini">
-                                                    <div style="width:35%" class="progress-bar progress-bar-danger"></div>
+                                                    <div style="width:35%"
+                                                         class="progress-bar progress-bar-danger"></div>
                                                 </div>
                                             </a>
                                         </li>
@@ -71,7 +73,8 @@
                                                 </div>
 
                                                 <div class="progress progress-mini">
-                                                    <div style="width:15%" class="progress-bar progress-bar-warning"></div>
+                                                    <div style="width:15%"
+                                                         class="progress-bar progress-bar-warning"></div>
                                                 </div>
                                             </a>
                                         </li>
@@ -84,7 +87,8 @@
                                                 </div>
 
                                                 <div class="progress progress-mini progress-striped active">
-                                                    <div style="width:90%" class="progress-bar progress-bar-success"></div>
+                                                    <div style="width:90%"
+                                                         class="progress-bar progress-bar-success"></div>
                                                 </div>
                                             </a>
                                         </li>
@@ -184,7 +188,8 @@
                                     <ul class="dropdown-menu dropdown-navbar">
                                         <li>
                                             <a href="#" class="clearfix">
-                                                <img src="../../public/ace/assets/images/avatars/avatar.png" class="msg-photo" alt="Alex's Avatar" />
+                                                <img src="../../public/ace/assets/images/avatars/avatar.png"
+                                                     class="msg-photo" alt="Alex's Avatar"/>
                                                 <span class="msg-body">
 													<span class="msg-title">
 														<span class="blue">Alex:</span>
@@ -201,7 +206,8 @@
 
                                         <li>
                                             <a href="#" class="clearfix">
-                                                <img src="../../public/ace/assets/images/avatars/avatar3.png" class="msg-photo" alt="Susan's Avatar" />
+                                                <img src="../../public/ace/assets/images/avatars/avatar3.png"
+                                                     class="msg-photo" alt="Susan's Avatar"/>
                                                 <span class="msg-body">
 													<span class="msg-title">
 														<span class="blue">Susan:</span>
@@ -218,7 +224,8 @@
 
                                         <li>
                                             <a href="#" class="clearfix">
-                                                <img src="../../public/ace/assets/images/avatars/avatar4.png" class="msg-photo" alt="Bob's Avatar" />
+                                                <img src="../../public/ace/assets/images/avatars/avatar4.png"
+                                                     class="msg-photo" alt="Bob's Avatar"/>
                                                 <span class="msg-body">
 													<span class="msg-title">
 														<span class="blue">Bob:</span>
@@ -235,7 +242,8 @@
 
                                         <li>
                                             <a href="#" class="clearfix">
-                                                <img src="../../public/ace/assets/images/avatars/avatar2.png" class="msg-photo" alt="Kate's Avatar" />
+                                                <img src="../../public/ace/assets/images/avatars/avatar2.png"
+                                                     class="msg-photo" alt="Kate's Avatar"/>
                                                 <span class="msg-body">
 													<span class="msg-title">
 														<span class="blue">Kate:</span>
@@ -252,7 +260,8 @@
 
                                         <li>
                                             <a href="#" class="clearfix">
-                                                <img src="../../public/ace/assets/images/avatars/avatar5.png" class="msg-photo" alt="Fred's Avatar" />
+                                                <img src="../../public/ace/assets/images/avatars/avatar5.png"
+                                                     class="msg-photo" alt="Fred's Avatar"/>
                                                 <span class="msg-body">
 													<span class="msg-title">
 														<span class="blue">Fred:</span>
@@ -280,7 +289,8 @@
 
                         <li class="light-blue dropdown-modal">
                             <a data-toggle="dropdown" href="#" class="dropdown-toggle">
-                                <img class="nav-user-photo" src="../../public/ace/assets/images/avatars/user.jpg" alt="Jason's Photo" />
+                                <img class="nav-user-photo" src="../../public/ace/assets/images/avatars/user.jpg"
+                                     alt="Jason's Photo"/>
                                 <span class="user-info">
 									<small>Welcome,</small>
 									Jason
@@ -421,7 +431,8 @@
                 </ul><!-- /.nav-list -->
 
                 <div class="sidebar-toggle sidebar-collapse" id="sidebar-collapse">
-                    <i id="sidebar-toggle-icon" class="ace-icon fa fa-angle-double-left ace-save-state" data-icon1="ace-icon fa fa-angle-double-left" data-icon2="ace-icon fa fa-angle-double-right"></i>
+                    <i id="sidebar-toggle-icon" class="ace-icon fa fa-angle-double-left ace-save-state"
+                       data-icon1="ace-icon fa fa-angle-double-left" data-icon2="ace-icon fa fa-angle-double-right"></i>
                 </div>
             </div>
 
@@ -429,13 +440,12 @@
                 <div class="main-content-inner">
 
 
-
                     <div class="page-content">
 
                         <div class="row">
                             <div class="col-xs-12">
                                 <!-- 子页面开始 -->
-                                    <router-view/>
+                                <router-view/>
                                 <!-- 子页面结束 -->
                             </div><!-- /.col -->
                         </div><!-- /.row -->
@@ -479,11 +489,27 @@
 <script>
     export default {
         name: "admin",
-        mounted: function(){
+        mounted: function () {
+            let _this = this;
             $("body").removeClass("login-layout light-login");
             $("body").attr("class", "no-skin");
+            //激活侧边栏状态写法2
+            //把router.js中的
+            _this.activeSidebar(_this.$route.name.replace("/", "-") + "-sidebar");
         },
-        methods:{
+        watch: {
+            $route: {
+                handler:function(val, oldVal){
+                    //激活侧边栏状态写法2
+                    // console.log("---->页面跳转：", val, oldVal);
+                    let _this = this;
+                    _this.$nextTick(function(){  //页面加载完成后执行
+                        _this.activeSidebar(_this.$route.name.replace("/", "-") + "-sidebar");
+                    })
+                }
+            }
+        },
+        methods: {
             activeSidebar: function (id) {
                 // 兄弟菜单去掉active样式，自身增加active样式
                 $("#" + id).siblings().removeClass("active");
