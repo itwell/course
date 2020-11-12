@@ -1,4 +1,4 @@
-package com.course.server.controller;
+package com.course.business.controller;
 
 
 

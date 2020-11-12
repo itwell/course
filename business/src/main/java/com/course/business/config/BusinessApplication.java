@@ -1,4 +1,4 @@
-package com.course.server;
+package com.course.business.config;
 
 import org.mybatis.spring.annotation.MapperScan;
 import org.slf4j.Logger;
@@ -10,16 +10,16 @@ import org.springframework.core.env.Environment;
 
 @SpringBootApplication
 @EnableEurekaClient
-@MapperScan("com.course.server.mapper")
-public class SystemApplication {
+@MapperScan("com.course.system.mapper")
+public class BusinessApplication {
 
-	private static final Logger LOG = LoggerFactory.getLogger(SystemApplication.class);
+	private static final Logger LOG = LoggerFactory.getLogger(BusinessApplication.class);
 
 	public static void main(String[] args) {
-		SpringApplication app = new SpringApplication(SystemApplication.class);
+		SpringApplication app = new SpringApplication(BusinessApplication.class);
 		Environment env = app.run(args).getEnvironment();
 		LOG.info("启动成功！！");
-		LOG.info("System地址: \thttp://127.0.0.1:{}", env.getProperty("server.port"));
+		LOG.info("business地址: \thttp://127.0.0.1:{}", env.getProperty("server.port"));
 	}
 
 }
