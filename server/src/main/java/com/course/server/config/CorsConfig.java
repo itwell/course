@@ -10,7 +10,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  * @author itwell
  * @date 2020-11-13 14:55
  */
-@Configuration
+/*@Configuration
 public class CorsConfig implements WebMvcConfigurer {
 
     public void addCorsMappings(CorsRegistry registry){
@@ -21,4 +21,4 @@ public class CorsConfig implements WebMvcConfigurer {
                 .allowCredentials(true)
                 .maxAge(3600);
     }
-}
+}*/
