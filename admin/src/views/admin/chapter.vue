@@ -1068,9 +1068,17 @@
         mounted: function(){
             //激活侧边栏状态写法1
             // this.$parent.activeSidebar("business-chapter-sidebar");
+            let _this = this;
+            _this.list();
         },
         methods:{
-
+            list(){
+                let _this = this;
+                _this.$ajax.get('http://127.0.0.1:9002/business/admin/chapter/list')
+                    .then((response)=>{
+                        console.log("查询章列表结果:",response);
+                    })
+            }
         }
     }
 </script>

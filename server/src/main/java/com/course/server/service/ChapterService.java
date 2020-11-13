@@ -26,7 +26,7 @@ public class ChapterService {
         chapterExample.setOrderByClause("id desc");
         List<Chapter> chapterList = chapterMapper.selectByExample(chapterExample);
         List<ChapterDto> ChapterDtoList = new ArrayList<ChapterDto>();
-        for (int i = 0; i < ChapterDtoList.size(); i++) {
+        for (int i = 0; i < chapterList.size(); i++) {
             Chapter chapter = chapterList.get(i);
             ChapterDto chapterDto = new ChapterDto();
             BeanUtils.copyProperties(chapter,chapterDto);

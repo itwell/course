@@ -20,7 +20,7 @@ public class ChapterController {
     @Autowired
     ChapterService chapterService;
 
-    @RequestMapping("/test")
+    @RequestMapping("/chapter/list")
     public List<ChapterDto> test() {
         return chapterService.list();
     }
