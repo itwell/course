@@ -30,11 +30,8 @@
 
                 <td>
                     <div class="hidden-sm hidden-xs btn-group">
-                        <button class="btn btn-xs btn-success">
-                            <i class="ace-icon fa fa-check bigger-120"></i>
-                        </button>
-
-                        <button class="btn btn-xs btn-info">
+                        <!--把循环中的每一个edit传入模态框上-->
+                        <button v-on:click="edit(chapter)" class="btn btn-xs btn-info">
                             <i class="ace-icon fa fa-pencil bigger-120"></i>
                         </button>
 
@@ -42,45 +39,8 @@
                             <i class="ace-icon fa fa-trash-o bigger-120"></i>
                         </button>
 
-                        <button class="btn btn-xs btn-warning">
-                            <i class="ace-icon fa fa-flag bigger-120"></i>
-                        </button>
                     </div>
 
-                    <div class="hidden-md hidden-lg">
-                        <div class="inline pos-rel">
-                            <button class="btn btn-minier btn-primary dropdown-toggle"
-                                    data-toggle="dropdown" data-position="auto">
-                                <i class="ace-icon fa fa-cog icon-only bigger-110"></i>
-                            </button>
-
-                            <ul class="dropdown-menu dropdown-only-icon dropdown-yellow dropdown-menu-right dropdown-caret dropdown-close">
-                                <li>
-                                    <a href="#" class="tooltip-info" data-rel="tooltip" title="View">
-																			<span class="blue">
-																				<i class="ace-icon fa fa-search-plus bigger-120"></i>
-																			</span>
-                                    </a>
-                                </li>
-
-                                <li>
-                                    <a href="#" class="tooltip-success" data-rel="tooltip" title="Edit">
-																			<span class="green">
-																				<i class="ace-icon fa fa-pencil-square-o bigger-120"></i>
-																			</span>
-                                    </a>
-                                </li>
-
-                                <li>
-                                    <a href="#" class="tooltip-error" data-rel="tooltip" title="Delete">
-																			<span class="red">
-																				<i class="ace-icon fa fa-trash-o bigger-120"></i>
-																			</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
                 </td>
             </tr>
 
@@ -146,6 +106,8 @@
         methods: {
             add(){
                 let _this = this;
+                /*新增的时候表单不用数据*/
+                _this.chapter = {};
                 $("#form-modal").modal("show");
             },
             list(page) {
@@ -158,7 +120,6 @@
                     .then((response) => {
                         console.log("查询大章列表结果:", response);
                         /*接口返回的data是ChapterDto*/
-                        debugger
                         let resp = response.data;
                         _this.chapters = resp.content.list;
                         _this.$refs.pagination.render(page, resp.content.total);
@@ -175,7 +136,13 @@
                             _this.list(1);
                         }
                     })
-            }
+            },
+            edit(chapter){
+                let _this = this;
+                /*_this.chapter = chapter; 这种写法有双向数据绑定的问题*/
+                _this.chapter = $.extend({},chapter);/**/
+                $("#form-modal").modal("show");
+            },
         }
     }
 </script>
