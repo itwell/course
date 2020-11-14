@@ -9,9 +9,7 @@ import com.course.server.domain.Chapter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -20,7 +18,7 @@ import java.util.List;
  * @date 2020-11-11 15:37
  */
 @RestController
-@RequestMapping("/admin")
+@RequestMapping("/admin/chapter")
 public class ChapterController {
 
     private static final Logger logger = LoggerFactory.getLogger(ChapterController.class);
@@ -28,7 +26,7 @@ public class ChapterController {
     @Autowired
     ChapterService chapterService;
 
-    @RequestMapping("/chapter/list")
+    @PostMapping("/list")
     public ResponseDto test(@RequestBody PageDto pageDto) {
         logger.info("pageDto: {}",pageDto);
         ResponseDto responseDto = new ResponseDto();
@@ -37,12 +35,20 @@ public class ChapterController {
         return responseDto;
     }
 
-    @RequestMapping("/chapter/save")
+    @PostMapping("/save")
     public ResponseDto save(@RequestBody ChapterDto chapterDto) {
         logger.info("pageDto: {}",chapterDto);
         ResponseDto responseDto = new ResponseDto();
         chapterService.save(chapterDto);
         responseDto.setContent(chapterDto);
+        return responseDto;
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseDto delete(@PathVariable String id) {
+        logger.info("id: {}",id);
+        ResponseDto responseDto = new ResponseDto();
+        chapterService.delete(id);
         return responseDto;
     }
 }
