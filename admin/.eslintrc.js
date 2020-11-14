@@ -11,6 +11,8 @@ module.exports = {
         'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'off',
         'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
         'no-undef': 'off',
+        'vue/no-unused-vars': 'off',
+        /*没有用到的变量不报错*/
         'no-unused-vars': 'off',
         'vue/require-v-for-key': 'off',
     },

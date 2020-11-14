@@ -19,12 +19,20 @@ import java.util.List;
 @RestController
 @RequestMapping("/admin")
 public class ChapterController {
+
     @Autowired
     ChapterService chapterService;
 
     @RequestMapping("/chapter/list")
     public PageDto test(@RequestBody PageDto pageDto) {
+
         chapterService.list(pageDto);
         return pageDto;
+    }
+
+    @RequestMapping("/chapter/save")
+    public ChapterDto save(@RequestBody ChapterDto chapterDto) {
+        chapterService.save(chapterDto);
+        return chapterDto;
     }
 }
