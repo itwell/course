@@ -133,8 +133,12 @@
                 let _this = this;
 
                 /*校验表单值是否合法*/
-                if (!Validator.require(_this.chapter.name, "名称")
-                    || !Validator.length(_this.chapter.courseId, "课程ID", 1, 8)) {
+                if (    !Validator.require(_this.chapter.name, "名称")
+                    ||
+                        !Validator.require(_this.chapter.courseId, "课程ID")
+                    ||
+                        !Validator.length(_this.chapter.courseId, "课程ID", 1, 8)
+                    ) {
                     return;
                 }
 
@@ -148,6 +152,8 @@
                             $("#form-modal").modal("hide");
                             Toast.success("保存成功");
                             _this.list(1);
+                        }else{
+                            Toast.warning(resp.message);
                         }
                     })
             },
