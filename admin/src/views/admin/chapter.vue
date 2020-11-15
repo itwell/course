@@ -52,7 +52,8 @@
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">&times;</span></button>
                         <h4 class="modal-title">表单</h4>
                     </div>
                     <div class="modal-body">
@@ -61,13 +62,14 @@
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">名称</label>
                                 <div class="col-sm-10">
-                                    <input  v-model="chapter.name" type="text" class="form-control" placeholder="名称">
+                                    <input v-model="chapter.name" type="text" class="form-control" placeholder="名称">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">课程ID</label>
                                 <div class="col-sm-10">
-                                    <input   v-model="chapter.courseId"  type="text" class="form-control" placeholder="课程ID">
+                                    <input v-model="chapter.courseId" type="text" class="form-control"
+                                           placeholder="课程ID">
                                 </div>
                             </div>
                         </form>
@@ -104,7 +106,7 @@
             _this.list(1);
         },
         methods: {
-            add(){
+            add() {
                 let _this = this;
                 /*新增的时候表单不用数据*/
                 _this.chapter = {};
@@ -112,12 +114,14 @@
             },
             list(page) {
                 let _this = this;
+                Loading.show();
                 _this.$ajax.post('http://127.0.0.1:9000/business/admin/chapter/list', {
                     page: page,
                     /*根据pagination名字获取组件*/
                     size: _this.$refs.pagination.size,
                 })
                     .then((response) => {
+                        Loading.hide();
                         console.log("查询大章列表结果:", response);
                         /*接口返回的data是ChapterDto*/
                         let resp = response.data;
@@ -127,52 +131,40 @@
             },
             save(page) {
                 let _this = this;
-                _this.$ajax.post('http://127.0.0.1:9000/business/admin/chapter/save',_this.chapter )
+                Loading.show();
+                _this.$ajax.post('http://127.0.0.1:9000/business/admin/chapter/save', _this.chapter)
                     .then((response) => {
+                        Loading.hide();
                         console.log("保存大章结果: ", response);
                         let resp = response.data;
-                        if(resp.success){
+                        if (resp.success) {
                             $("#form-modal").modal("hide");
-                            toast.success("保存成功");
+                            Toast.success("保存成功");
                             _this.list(1);
                         }
                     })
             },
-            edit(chapter){
+            edit(chapter) {
                 let _this = this;
                 /*_this.chapter = chapter; 这种写法有双向数据绑定的问题*/
-                _this.chapter = $.extend({},chapter);/**/
+                _this.chapter = $.extend({}, chapter);
+                /**/
                 $("#form-modal").modal("show");
             },
             del(id) {
                 let _this = this;
-                Swal.fire({
-                    title: '确认删除?',
-                    text: "删除后不可恢复,确认删除?",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: '确认',
-                    cancelButtonText: '取消'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        _this.$ajax.delete('http://127.0.0.1:9000/business/admin/chapter/delete/'+ id,_this.chapter ).then((response) => {
-                                console.log("删除大章列表结果: ", response);
-                                let resp = response.data;
-                                if(resp.success){
-                                    toast.success("删除成功");
-                                    _this.list(1);
-                                }
-                            });
-                        Swal.fire(
-                            '删除成功!',
-                            '删除成功!',
-                            'success'
-                        )
-                    }
+                Confirm.show("删除大章后不可恢复111，确认删除？", function () {
+                    Loading.show();
+                    _this.$ajax.delete('http://127.0.0.1:9000/business/admin/chapter/delete/' + id, _this.chapter).then((response) => {
+                        Loading.hide();
+                        console.log("删除大章列表结果: ", response);
+                        let resp = response.data;
+                        if (resp.success) {
+                            Toast.success("删除成功");
+                            _this.list(1);
+                        }
+                    });
                 })
-
             },
         }
     }
