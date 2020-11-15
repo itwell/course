@@ -29,6 +29,11 @@ public class ChapterController {
     @Autowired
     ChapterService chapterService;
 
+    /**
+     * 查询大章
+     * @param pageDto
+     * @return
+     */
     @PostMapping("/list")
     public ResponseDto test(@RequestBody PageDto pageDto) {
         logger.info("pageDto: {}",pageDto);
@@ -38,6 +43,11 @@ public class ChapterController {
         return responseDto;
     }
 
+    /**
+     * 保存大章
+     * @param chapterDto
+     * @return
+     */
     @PostMapping("/save")
     public ResponseDto save(@RequestBody ChapterDto chapterDto) {
         logger.info("pageDto: {}",chapterDto);
@@ -52,6 +62,11 @@ public class ChapterController {
         return responseDto;
     }
 
+    /**
+     * 删除大章
+     * @param id
+     * @return
+     */
     @DeleteMapping("/delete/{id}")
     public ResponseDto delete(@PathVariable String id) {
         logger.info("id: {}",id);

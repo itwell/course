@@ -106,12 +106,15 @@
             _this.list(1);
         },
         methods: {
+            /*新增大章*/
             add() {
                 let _this = this;
                 /*新增的时候表单不用数据*/
                 _this.chapter = {};
                 $("#form-modal").modal("show");
             },
+
+            /*查询大章*/
             list(page) {
                 let _this = this;
                 Loading.show();
@@ -122,13 +125,14 @@
                 })
                     .then((response) => {
                         Loading.hide();
-                        console.log("查询大章列表结果:", response);
                         /*接口返回的data是ChapterDto*/
                         let resp = response.data;
                         _this.chapters = resp.content.list;
                         _this.$refs.pagination.render(page, resp.content.total);
                     })
             },
+
+            /*保存大章*/
             save(page) {
                 let _this = this;
 
@@ -146,7 +150,6 @@
                 _this.$ajax.post('http://127.0.0.1:9000/business/admin/chapter/save', _this.chapter)
                     .then((response) => {
                         Loading.hide();
-                        console.log("保存大章结果: ", response);
                         let resp = response.data;
                         if (resp.success) {
                             $("#form-modal").modal("hide");
@@ -157,20 +160,23 @@
                         }
                     })
             },
+
+            /*回显数据*/
             edit(chapter) {
                 let _this = this;
                 /*_this.chapter = chapter; 这种写法有双向数据绑定的问题*/
                 _this.chapter = $.extend({}, chapter);
-                /**/
+
                 $("#form-modal").modal("show");
             },
+
+            /*删除大章*/
             del(id) {
                 let _this = this;
                 Confirm.show("删除大章后不可恢复111，确认删除？", function () {
                     Loading.show();
                     _this.$ajax.delete('http://127.0.0.1:9000/business/admin/chapter/delete/' + id, _this.chapter).then((response) => {
                         Loading.hide();
-                        console.log("删除大章列表结果: ", response);
                         let resp = response.data;
                         if (resp.success) {
                             Toast.success("删除成功");
