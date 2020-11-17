@@ -15,27 +15,27 @@
         <table id="simple-table" class="table  table-bordered table-hover">
             <thead>
             <tr>
-                <th>ID</th>
-                <th>名称</th>
-                <th>课程ID</th>
+                    <#list fieldList as field>
+                        <th>${field.nameCn}</th>
+                    </#list>
                 <th>操作</th>
             </tr>
             </thead>
 
             <tbody>
-            <tr v-for="chapter in chapters">
-                <td>{{chapter.id}}</td>
-                <td>{{chapter.name}}</td>
-                <td>{{chapter.courseId}}</td>
+            <tr v-for="${domain} in ${domain}s">
+                <#list fieldList as field>
+                        <td>{{${domain}.${field.nameHump}}}</td>
+                </#list>
 
                 <td>
                     <div class="hidden-sm hidden-xs btn-group">
                         <!--把循环中的每一个edit传入模态框上-->
-                        <button v-on:click="edit(chapter)" class="btn btn-xs btn-info">
+                        <button v-on:click="edit(${domain})" class="btn btn-xs btn-info">
                             <i class="ace-icon fa fa-pencil bigger-120"></i>
                         </button>
 
-                        <button v-on:click="del(chapter.id)" class="btn btn-xs btn-danger">
+                        <button v-on:click="del(${domain}.id)" class="btn btn-xs btn-danger">
                             <i class="ace-icon fa fa-trash-o bigger-120"></i>
                         </button>
 
@@ -59,19 +59,15 @@
                     <div class="modal-body">
                         <!--水平表单-->
                         <form class="form-horizontal">
-                            <div class="form-group">
-                                <label class="col-sm-2 control-label">名称</label>
-                                <div class="col-sm-10">
-                                    <input v-model="chapter.name" type="text" class="form-control" placeholder="名称">
+                            <#list fieldList as field>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">${field.nameCn}</label>
+                                    <div class="col-sm-10">
+                                        <input v-model="${domain}.${field.nameHump}" type="text" class="form-control"
+                                               placeholder="${field.nameCn}">
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-2 control-label">课程ID</label>
-                                <div class="col-sm-10">
-                                    <input v-model="chapter.courseId" type="text" class="form-control"
-                                           placeholder="课程ID">
-                                </div>
-                            </div>
+                            </#list>
                         </form>
                     </div>
                     <div class="modal-footer">
@@ -91,92 +87,102 @@
 
     export default {
         components: {Pagination},
-        name: "chapter",
+        name: "${domain}",
         data: function () {
             return {
-                chapter: {},
-                chapters: []
+                ${domain}:{},
+                ${domain}s: []
             }
         },
         mounted: function () {
             //激活侧边栏状态写法1
-            // this.$parent.activeSidebar("business-chapter-sidebar");
+            // this.$parent.activeSidebar("${module}-${domain}-sidebar");
             let _this = this;
             _this.$refs.pagination.size = 5;
             _this.list(1);
         },
         methods: {
-            /*新增大章*/
+            /**
+             * 新增
+             */
             add() {
                 let _this = this;
                 /*新增的时候表单不用数据*/
-                _this.chapter = {};
+                _this.${domain} = {};
                 $("#form-modal").modal("show");
             },
 
-            /*查询大章*/
+            /**
+             * 查询
+             */
             list(page) {
                 let _this = this;
                 Loading.show();
-                console.log("aaaaa============");
-                _this.$ajax.post(process.env.VUE_APP_SERVER + '/business/admin/chapter/list', {
+                _this.$ajax.post(process.env.VUE_APP_SERVER + '/${module}/admin/${domain}/list', {
                     page: page,
+                    /*根据pagination名字获取组件*/
                     size: _this.$refs.pagination.size,
-                }).then((response)=>{
-                    console.log(123);
-                    console.log(response);
-
-                    Loading.hide();
-                    let resp = response.data;
-                    _this.chapters = resp.content.list;
-                    _this.$refs.pagination.render(page, resp.content.total);
                 })
+                        .then((response) => {
+                            Loading.hide();
+                            /*接口返回的data是ChapterDto*/
+                            let resp = response.data;
+                            _this.${domain}s = resp.content.list;
+                            _this.$refs.pagination.render(page, resp.content.total);
+                        })
             },
 
-            /*保存大章*/
+            /**
+             * 保存
+             */
             save(page) {
                 let _this = this;
 
                 /*校验表单值是否合法*/
-                if (!Validator.require(_this.chapter.name, "名称")
-                    ||
-                    !Validator.require(_this.chapter.courseId, "课程ID")
-                    ||
-                    !Validator.length(_this.chapter.courseId, "课程ID", 1, 8)
+                /*if (!Validator.require(_this.{domain}.name, "名称")
+                        ||
+                        !Validator.require(_this.{domain}.courseId, "课程ID")
+                        ||
+                        !Validator.length(_this.{domain}.courseId, "课程ID", 1, 8)
                 ) {
                     return;
-                }
+                }*/
 
                 Loading.show();
-                _this.$ajax.post(process.env.VUE_APP_SERVER + '/business/admin/chapter/save', _this.chapter)
-                    .then((response) => {
-                        Loading.hide();
-                        let resp = response.data;
-                        if (resp.success) {
-                            $("#form-modal").modal("hide");
-                            Toast.success("保存成功");
-                            _this.list(1);
-                        } else {
-                            Toast.warning(resp.message);
-                        }
-                    })
+                _this.$ajax.post(process.env.VUE_APP_SERVER+ '/${module}/admin/${domain}/save', _this.${domain})
+                        .then((response) => {
+                            Loading.hide();
+                            let resp = response.data;
+                            if (resp.success) {
+                                $("#form-modal").modal("hide");
+                                Toast.success("保存成功");
+                                _this.list(1);
+                            } else {
+                                Toast.warning(resp.message);
+                            }
+                        })
             },
 
-            /*回显数据*/
-            edit(chapter) {
+            /**
+             * 回显数据
+             */
+            edit(${domain}) {
                 let _this = this;
                 /*_this.chapter = chapter; 这种写法有双向数据绑定的问题*/
-                _this.chapter = $.extend({}, chapter);
+                _this.${domain} = $.extend({}, ${domain});
 
                 $("#form-modal").modal("show");
             },
 
-            /*删除大章*/
+            /**
+             * 删除数据
+             * @param id
+             */
             del(id) {
                 let _this = this;
-                Confirm.show("删除大章后不可恢复111，确认删除？", function () {
+                Confirm.show("删除${tableNameCn}后不可恢复111，确认删除？", function () {
                     Loading.show();
-                    _this.$ajax.delete(process.env.VUE_APP_SERVER + '/business/admin/chapter/delete/' + id, _this.chapter).then((response) => {
+                    _this.$ajax.delete(process.env.VUE_APP_SERVER + '/${module}/admin/${domain}/delete/' + id, _this.${domain}).then((response) => {
                         Loading.hide();
                         let resp = response.data;
                         if (resp.success) {

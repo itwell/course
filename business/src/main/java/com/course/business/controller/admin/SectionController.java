@@ -52,7 +52,7 @@ public class SectionController {
     public ResponseDto save(@RequestBody SectionDto sectionDto) {
         logger.info("pageDto: {}",sectionDto);
 
-       /* ValidatorUtil.require(sectionDto.getName(),"名称");
+/*        ValidatorUtil.require(sectionDto.getName(),"名称");
         ValidatorUtil.require(sectionDto.getName(),"课程ID");
         ValidatorUtil.length(sectionDto.getCourseId(),"课程ID",1,8);*/
 
