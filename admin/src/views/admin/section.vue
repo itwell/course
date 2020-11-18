@@ -174,9 +174,12 @@
         name: "section",
         data: function () {
             return {
-                section:{},
-                sections: []
+        section:
+            {
             }
+        ,
+            sections: []
+        }
         },
         mounted: function () {
             //激活侧边栏状态写法1
@@ -223,14 +226,13 @@
                 let _this = this;
 
                 /*校验表单值是否合法*/
-                /*if (!Validator.require(_this.{domain}.name, "名称")
-                        ||
-                        !Validator.require(_this.{domain}.courseId, "课程ID")
-                        ||
-                        !Validator.length(_this.{domain}.courseId, "课程ID", 1, 8)
+                if (1 != 1
+          || !Validator.require(_this.section.title, "标题")
+          || !Validator.length(_this.section.title, "标题", 1, 50)
+          || !Validator.length(_this.section.video, "视频", 1, 200)
                 ) {
                     return;
-                }*/
+                }
 
                 Loading.show();
                 _this.$ajax.post(process.env.VUE_APP_SERVER + '/business/admin/section/save', _this.section)
@@ -256,7 +258,8 @@
                 _this.section = $.extend({}, section);
 
                 $("#form-modal").modal("show");
-            },
+            }
+            ,
 
             /**
              * 删除数据
@@ -275,7 +278,8 @@
                         }
                     });
                 })
-            },
+            }
+            ,
         }
     }
 </script>

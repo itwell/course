@@ -3,6 +3,7 @@ package com.course.generator.util;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -59,6 +60,7 @@ public class DbUtil {
         List<Field> fieldList = new ArrayList<>();
         Connection conn = getConnection();
         Statement stmt = conn.createStatement();
+        //这句话可以看出表结构
         ResultSet rs = stmt.executeQuery("show full columns from `" + tableName + "`");
         if (rs != null) {
             while(rs.next()) {
@@ -77,6 +79,14 @@ public class DbUtil {
                     field.setNameCn(comment.substring(0, comment.indexOf("|")));
                 } else {
                     field.setNameCn(comment);
+                }
+                field.setNullAble("YES".equals(nullAble));
+                if (type.toUpperCase().contains("varchar".toUpperCase())) {
+                    String lengthStr = type.substring(type.indexOf("(") + 1, type.length() - 1);
+                    field.setLength(Integer.valueOf(lengthStr));
+                } else {
+                    //不用校验
+                    field.setLength(0);
                 }
                 fieldList.add(field);
             }

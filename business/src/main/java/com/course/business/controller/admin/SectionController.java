@@ -27,7 +27,7 @@ public class SectionController {
     public static final String BUSINESS_NAME = "小节";
 
     @Autowired
-    SectionService sectionService;
+SectionService sectionService;
 
     /**
      * 查询大章
@@ -38,7 +38,7 @@ public class SectionController {
     public ResponseDto test(@RequestBody PageDto pageDto) {
         logger.info("pageDto: {}",pageDto);
         ResponseDto responseDto = new ResponseDto();
-        sectionService.list(pageDto);
+sectionService.list(pageDto);
         responseDto.setContent(pageDto);
         return responseDto;
     }
@@ -52,12 +52,12 @@ public class SectionController {
     public ResponseDto save(@RequestBody SectionDto sectionDto) {
         logger.info("pageDto: {}",sectionDto);
 
-/*        ValidatorUtil.require(sectionDto.getName(),"名称");
-        ValidatorUtil.require(sectionDto.getName(),"课程ID");
-        ValidatorUtil.length(sectionDto.getCourseId(),"课程ID",1,8);*/
+            ValidatorUtil.require(sectionDto.getTitle(), "标题");
+            ValidatorUtil.length(sectionDto.getTitle(), "标题", 1, 50);
+            ValidatorUtil.length(sectionDto.getVideo(), "视频", 1, 200);
 
         ResponseDto responseDto = new ResponseDto();
-        sectionService.save(sectionDto);
+sectionService.save(sectionDto);
         responseDto.setContent(sectionDto);
         return responseDto;
     }
@@ -71,7 +71,7 @@ public class SectionController {
     public ResponseDto delete(@PathVariable String id) {
         logger.info("id: {}",id);
         ResponseDto responseDto = new ResponseDto();
-        sectionService.delete(id);
+sectionService.delete(id);
         return responseDto;
     }
 }

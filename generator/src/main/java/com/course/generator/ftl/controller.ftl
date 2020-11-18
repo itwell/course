@@ -27,7 +27,7 @@ public class ${Domain}Controller {
     public static final String BUSINESS_NAME = "${tableNameCn}";
 
     @Autowired
-    ${Domain}Service ${domain}Service;
+${Domain}Service ${domain}Service;
 
     /**
      * 查询大章
@@ -38,7 +38,7 @@ public class ${Domain}Controller {
     public ResponseDto test(@RequestBody PageDto pageDto) {
         logger.info("pageDto: {}",pageDto);
         ResponseDto responseDto = new ResponseDto();
-        ${domain}Service.list(pageDto);
+${domain}Service.list(pageDto);
         responseDto.setContent(pageDto);
         return responseDto;
     }
@@ -52,9 +52,16 @@ public class ${Domain}Controller {
     public ResponseDto save(@RequestBody ${Domain}Dto ${domain}Dto) {
         logger.info("pageDto: {}",${domain}Dto);
 
-        ValidatorUtil.require(${domain}Dto.getName(),"名称");
-        ValidatorUtil.require(${domain}Dto.getName(),"课程ID");
-        ValidatorUtil.length(${domain}Dto.getCourseId(),"课程ID",1,8);
+<#list fieldList as field>
+    <#if field.name!="id" && field.nameHump!="createdAt" && field.nameHump!="updatedAt" && field.nameHump!="sort">
+        <#if !field.nullAble>
+            ValidatorUtil.require(${domain}Dto.get${field.nameBigHump}(), "${field.nameCn}");
+        </#if>
+        <#if (field.length > 0)>
+            ValidatorUtil.length(${domain}Dto.get${field.nameBigHump}(), "${field.nameCn}", 1, ${field.length?c});
+        </#if>
+    </#if>
+</#list>
 
         ResponseDto responseDto = new ResponseDto();
         ${domain}Service.save(${domain}Dto);
@@ -71,7 +78,7 @@ public class ${Domain}Controller {
     public ResponseDto delete(@PathVariable String id) {
         logger.info("id: {}",id);
         ResponseDto responseDto = new ResponseDto();
-        ${domain}Service.delete(id);
+${domain}Service.delete(id);
         return responseDto;
     }
 }
