@@ -1,7 +1,8 @@
 package com.course.server.dto;
 
-import java.util.Date;
 import com.fasterxml.jackson.annotation.JsonFormat;
+
+import java.util.Date;
 
 public class SectionDto {
 
@@ -56,11 +57,6 @@ public class SectionDto {
      */
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date updatedAt;
-
-    /**
-     * vod|阿里云vod
-     */
-    private String vod;
 
     public String getId() {
         return id;
@@ -142,14 +138,6 @@ public class SectionDto {
         this.updatedAt = updatedAt;
     }
 
-    public String getVod() {
-        return vod;
-    }
-
-    public void setVod(String vod) {
-        this.vod = vod;
-    }
-
 
     @Override
     public String toString() {
@@ -167,7 +155,6 @@ public class SectionDto {
         sb.append(", sort=").append(sort);
         sb.append(", createdAt=").append(createdAt);
         sb.append(", updatedAt=").append(updatedAt);
-        sb.append(", vod=").append(vod);
         sb.append("]");
         return sb.toString();
     }

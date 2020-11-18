@@ -15,50 +15,44 @@
         <table id="simple-table" class="table  table-bordered table-hover">
             <thead>
             <tr>
-                                            <th>id</th>
-                        <th>标题</th>
-                        <th>课程</th>
-                        <th>大章</th>
-                        <th>视频</th>
-                        <th>时长</th>
-                        <th>收费</th>
-                        <th>顺序</th>
-                        <th>创建时间</th>
-                        <th>修改时间</th>
-                        <th>vod</th>
+                                <th>id</th>
+                    <th>标题</th>
+                    <th>课程</th>
+                    <th>大章</th>
+                    <th>视频</th>
+                    <th>时长</th>
+                    <th>收费</th>
+                    <th>顺序</th>
                 <th>操作</th>
             </tr>
             </thead>
 
             <tbody>
-            <tr v-for="section in sections">
-                        <td>{{section.id}}</td>
-                        <td>{{section.title}}</td>
-                        <td>{{section.courseId}}</td>
-                        <td>{{section.chapterId}}</td>
-                        <td>{{section.video}}</td>
-                        <td>{{section.time}}</td>
-                        <td>{{section.charge}}</td>
-                        <td>{{section.sort}}</td>
-                        <td>{{section.createdAt}}</td>
-                        <td>{{section.updatedAt}}</td>
-                        <td>{{section.vod}}</td>
+                <tr v-for="section in sections">
+                            <td>{{section.id}}</td>
+                            <td>{{section.title}}</td>
+                            <td>{{section.courseId}}</td>
+                            <td>{{section.chapterId}}</td>
+                            <td>{{section.video}}</td>
+                            <td>{{section.time}}</td>
+                            <td>{{section.charge}}</td>
+                            <td>{{section.sort}}</td>
 
-                <td>
-                    <div class="hidden-sm hidden-xs btn-group">
-                        <!--把循环中的每一个edit传入模态框上-->
-                        <button v-on:click="edit(section)" class="btn btn-xs btn-info">
-                            <i class="ace-icon fa fa-pencil bigger-120"></i>
-                        </button>
+                    <td>
+                        <div class="hidden-sm hidden-xs btn-group">
+                            <!--把循环中的每一个edit传入模态框上-->
+                            <button v-on:click="edit(section)" class="btn btn-xs btn-info">
+                                <i class="ace-icon fa fa-pencil bigger-120"></i>
+                            </button>
 
-                        <button v-on:click="del(section.id)" class="btn btn-xs btn-danger">
-                            <i class="ace-icon fa fa-trash-o bigger-120"></i>
-                        </button>
+                            <button v-on:click="del(section.id)" class="btn btn-xs btn-danger">
+                                <i class="ace-icon fa fa-trash-o bigger-120"></i>
+                            </button>
 
-                    </div>
+                        </div>
 
-                </td>
-            </tr>
+                    </td>
+                </tr>
 
             </tbody>
         </table>
@@ -75,83 +69,55 @@
                     <div class="modal-body">
                         <!--水平表单-->
                         <form class="form-horizontal">
-                                <div class="form-group">
-                                    <label class="col-sm-2 control-label">id</label>
-                                    <div class="col-sm-10">
-                                        <input v-model="section.id" type="text" class="form-control"
-                                               placeholder="id">
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">标题</label>
+                                        <div class="col-sm-10">
+                                            <input v-model="section.title" type="text" class="form-control"
+                                                   placeholder="标题">
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-sm-2 control-label">标题</label>
-                                    <div class="col-sm-10">
-                                        <input v-model="section.title" type="text" class="form-control"
-                                               placeholder="标题">
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">课程</label>
+                                        <div class="col-sm-10">
+                                            <input v-model="section.courseId" type="text" class="form-control"
+                                                   placeholder="课程">
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-sm-2 control-label">课程</label>
-                                    <div class="col-sm-10">
-                                        <input v-model="section.courseId" type="text" class="form-control"
-                                               placeholder="课程">
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">大章</label>
+                                        <div class="col-sm-10">
+                                            <input v-model="section.chapterId" type="text" class="form-control"
+                                                   placeholder="大章">
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-sm-2 control-label">大章</label>
-                                    <div class="col-sm-10">
-                                        <input v-model="section.chapterId" type="text" class="form-control"
-                                               placeholder="大章">
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">视频</label>
+                                        <div class="col-sm-10">
+                                            <input v-model="section.video" type="text" class="form-control"
+                                                   placeholder="视频">
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-sm-2 control-label">视频</label>
-                                    <div class="col-sm-10">
-                                        <input v-model="section.video" type="text" class="form-control"
-                                               placeholder="视频">
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">时长</label>
+                                        <div class="col-sm-10">
+                                            <input v-model="section.time" type="text" class="form-control"
+                                                   placeholder="时长">
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-sm-2 control-label">时长</label>
-                                    <div class="col-sm-10">
-                                        <input v-model="section.time" type="text" class="form-control"
-                                               placeholder="时长">
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">收费</label>
+                                        <div class="col-sm-10">
+                                            <input v-model="section.charge" type="text" class="form-control"
+                                                   placeholder="收费">
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-sm-2 control-label">收费</label>
-                                    <div class="col-sm-10">
-                                        <input v-model="section.charge" type="text" class="form-control"
-                                               placeholder="收费">
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">顺序</label>
+                                        <div class="col-sm-10">
+                                            <input v-model="section.sort" type="text" class="form-control"
+                                                   placeholder="顺序">
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-sm-2 control-label">顺序</label>
-                                    <div class="col-sm-10">
-                                        <input v-model="section.sort" type="text" class="form-control"
-                                               placeholder="顺序">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-sm-2 control-label">创建时间</label>
-                                    <div class="col-sm-10">
-                                        <input v-model="section.createdAt" type="text" class="form-control"
-                                               placeholder="创建时间">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-sm-2 control-label">修改时间</label>
-                                    <div class="col-sm-10">
-                                        <input v-model="section.updatedAt" type="text" class="form-control"
-                                               placeholder="修改时间">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-sm-2 control-label">vod</label>
-                                    <div class="col-sm-10">
-                                        <input v-model="section.vod" type="text" class="form-control"
-                                               placeholder="vod">
-                                    </div>
-                                </div>
                         </form>
                     </div>
                     <div class="modal-footer">
@@ -227,9 +193,9 @@
 
                 /*校验表单值是否合法*/
                 if (1 != 1
-          || !Validator.require(_this.section.title, "标题")
-          || !Validator.length(_this.section.title, "标题", 1, 50)
-          || !Validator.length(_this.section.video, "视频", 1, 200)
+                      || !Validator.require(_this.section.title, "标题")
+                      || !Validator.length(_this.section.title, "标题", 1, 50)
+                      || !Validator.length(_this.section.video, "视频", 1, 200)
                 ) {
                     return;
                 }

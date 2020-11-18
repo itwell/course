@@ -5,14 +5,11 @@ import com.course.server.dto.ChapterDto;
 import com.course.server.dto.PageDto;
 import com.course.server.dto.ResponseDto;
 import com.course.server.service.ChapterService;
-import com.course.server.domain.Chapter;
 import com.course.server.util.ValidatorUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 /**
  * @author itwell
@@ -27,7 +24,7 @@ public class ChapterController {
     public static final String BUSINESS_NAME = "大章";
 
     @Autowired
-    ChapterService chapterService;
+ChapterService chapterService;
 
     /**
      * 查询大章
@@ -38,7 +35,7 @@ public class ChapterController {
     public ResponseDto test(@RequestBody PageDto pageDto) {
         logger.info("pageDto: {}",pageDto);
         ResponseDto responseDto = new ResponseDto();
-        chapterService.list(pageDto);
+chapterService.list(pageDto);
         responseDto.setContent(pageDto);
         return responseDto;
     }
@@ -52,9 +49,7 @@ public class ChapterController {
     public ResponseDto save(@RequestBody ChapterDto chapterDto) {
         logger.info("pageDto: {}",chapterDto);
 
-        ValidatorUtil.require(chapterDto.getName(),"名称");
-        ValidatorUtil.require(chapterDto.getName(),"课程ID");
-        ValidatorUtil.length(chapterDto.getCourseId(),"课程ID",1,8);
+            ValidatorUtil.length(chapterDto.getName(), "名称", 1, 50);
 
         ResponseDto responseDto = new ResponseDto();
         chapterService.save(chapterDto);
@@ -71,7 +66,7 @@ public class ChapterController {
     public ResponseDto delete(@PathVariable String id) {
         logger.info("id: {}",id);
         ResponseDto responseDto = new ResponseDto();
-        chapterService.delete(id);
+chapterService.delete(id);
         return responseDto;
     }
 }

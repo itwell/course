@@ -39,7 +39,7 @@ public class ServerGenerator {
         String tableNameCn = DbUtil.getTableComment(tableName);
         String domain = Domain.substring(0, 1).toLowerCase() + Domain.substring(1);
 
-        List<Field> fieldList = DbUtil.getColumnByTableName("section");
+        List<Field> fieldList = DbUtil.getColumnByTableName(tableName);
         Set<String> typeSet = getJavaTypes(fieldList);
 
         HashMap<String, Object> map = new HashMap<>();

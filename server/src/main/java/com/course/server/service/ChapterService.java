@@ -18,7 +18,6 @@ import org.springframework.util.StringUtils;
 import java.util.ArrayList;
 import java.util.List;
 
-
 /**
  * @author itwell
  * @date 2020-11-11 16:39
@@ -28,45 +27,59 @@ public class ChapterService {
     @Autowired
     ChapterMapper chapterMapper;
 
+    /**
+     * 列表查询
+     */
     public void list(PageDto pageDto) {
         //分页
         PageHelper.startPage(pageDto.getPage(),pageDto.getSize());
 
         ChapterExample chapterExample = new ChapterExample();
-        chapterExample.setOrderByClause("id desc");
         List<Chapter> chapterList = chapterMapper.selectByExample(chapterExample);
 
         PageInfo<Chapter> pageInfo = new PageInfo<>(chapterList);
         pageDto.setTotal(pageInfo.getTotal());
 
         List<ChapterDto> ChapterDtoList = new ArrayList<ChapterDto>();
-        for (int i = 0; i < chapterList.size(); i++) {
-            Chapter chapter = chapterList.get(i);
-            ChapterDto chapterDto = new ChapterDto();
-            BeanUtils.copyProperties(chapter,chapterDto);
-            ChapterDtoList.add(chapterDto);
-        }
-        pageDto.setList(ChapterDtoList);
+                for (int i = 0; i < chapterList.size(); i++) {
+                Chapter chapter = chapterList.get(i);
+                ChapterDto chapterDto = new ChapterDto();
+                BeanUtils.copyProperties(chapter,chapterDto);
+                ChapterDtoList.add(chapterDto);
+                }
+                pageDto.setList(ChapterDtoList);
     }
 
+    /**
+    * 保存，id有值时更新，无值时新增
+    */
     public void save(ChapterDto chapterDto) {
         Chapter chapter = CopyUtil.copy(chapterDto, Chapter.class);
         if(StringUtils.isEmpty(chapterDto.getId())){
-            this.insert(chapter);
+        this.insert(chapter);
         }else {
-            this.update(chapter);
+        this.update(chapter);
         }
     }
 
+    /**
+    * 新增
+    */
     private void insert(Chapter chapter) {
         chapter.setId(UuidUtil.getShortUuid());
         chapterMapper.insert(chapter);
     }
 
+    /**
+    * 更新
+    */
     private void update(Chapter chapter) {
         chapterMapper.updateByPrimaryKey(chapter);
     }
 
+    /**
+    * 删除
+    */
     public void delete(String id) {
         chapterMapper.deleteByPrimaryKey(id);
     }
