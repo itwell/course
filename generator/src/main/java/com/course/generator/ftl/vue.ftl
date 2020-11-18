@@ -96,12 +96,9 @@
         name: "${module}-${domain}",
         data: function () {
             return {
-        ${domain}:
-            {
+                ${domain}:{},
+                ${domain}s: []
             }
-        ,
-            ${domain}s: []
-        }
         },
         mounted: function () {
             //激活侧边栏状态写法1
