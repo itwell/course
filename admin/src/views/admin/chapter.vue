@@ -1,6 +1,11 @@
 <template>
     <div class="page-content">
+        <h3>{{course.name}}</h3>
         <p>
+            <router-link to="/business/course" class="btn btn-white btn-default btn-round">
+                <i class="ace-icon fa fa-arrow-left"></i>
+                返回课程
+            </router-link>
             <button v-on:click="add()" v-bind:list="list" class="btn btn-white btn-default btn-round">
                 <i class="ace-icon fa fa-edit blue"></i>
                 新增
@@ -15,7 +20,7 @@
         <table id="simple-table" class="table  table-bordered table-hover">
             <thead>
             <tr>
-                                <th>id</th>
+                    <th>id</th>
                     <th>标题</th>
                     <th>课程</th>
                     <th>大章</th>
@@ -141,18 +146,21 @@
         name: "chapter",
         data: function () {
             return {
-        chapter:
-            {
+                chapter: {},
+                chapters: [],
+                course: {},
             }
-        ,
-            chapters: []
-        }
         },
         mounted: function () {
             //激活侧边栏状态写法1
             // this.$parent.activeSidebar("business-chapter-sidebar");
             let _this = this;
             _this.$refs.pagination.size = 5;
+            let course = SessionStorage.get("course") || {};
+/*            if (Tool.isEmpty(course)) {
+                _this.$router.push("/welcome");
+            }*/
+            _this.course = course;
             _this.list(1);
         },
         methods: {
@@ -245,8 +253,7 @@
                         }
                     });
                 })
-            }
-            ,
+            },
         }
     }
 </script>

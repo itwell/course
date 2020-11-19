@@ -12,56 +12,55 @@
             </button>
         </p>
 
-        <table id="simple-table" class="table  table-bordered table-hover">
-            <thead>
-            <tr>
-                                <th>id</th>
-                    <th>名称</th>
-                    <th>概述</th>
-                    <th>时长</th>
-                    <th>价格（元）</th>
-                    <th>封面</th>
-                    <th>级别</th>
-                    <th>收费</th>
-                    <th>状态</th>
-                    <th>报名数</th>
-                    <th>顺序</th>
-                <th>操作</th>
-            </tr>
-            </thead>
+        <div class="row">
+            <div v-for="course in courses" class="col-md-3">
+                <div class="thumbnail search-thumbnail">
+                    <img v-show="!course.image" class="media-object" src="/static/image/demo-course.jpg" />
+                    <img v-show="course.image" class="media-object" v-bind:src="course.image" />
+                    <div class="caption">
+                    <div class="clearfix">
+                          <span class="pull-right label label-primary info-label">
+                            {{COURSE_LEVEL | optionKV(course.level)}}
+                          </span>
+                          <span class="pull-right label label-primary info-label">
+                            {{COURSE_CHARGE | optionKV(course.charge)}}
+                          </span>
+                           <span class="pull-right label label-primary info-label">
+                            {{COURSE_STATUS | optionKV(course.status)}}
+                          </span>
+                    </div>
 
-            <tbody>
-                <tr v-for="course in courses">
-                            <td>{{course.id}}</td>
-                            <td>{{course.name}}</td>
-                            <td>{{course.summary}}</td>
-                            <td>{{course.time}}</td>
-                            <td>{{course.price}}</td>
-                            <td>{{course.image}}</td>
-                            <td>{{COURSE_LEVEL | optionKV(course.level)}}</td>
-                            <td>{{COURSE_CHARGE | optionKV(course.charge)}}</td>
-                            <td>{{COURSE_STATUS | optionKV(course.status)}}</td>
-                            <td>{{course.enroll}}</td>
-                            <td>{{course.sort}}</td>
+                    <h3 class="search-title">
+                        <a href="#" class="blue">{{course.name}}</a>
+                    </h3>
 
-                    <td>
-                        <div class="hidden-sm hidden-xs btn-group">
-                            <!--把循环中的每一个edit传入模态框上-->
-                            <button v-on:click="edit(course)" class="btn btn-xs btn-info">
-                                <i class="ace-icon fa fa-pencil bigger-120"></i>
-                            </button>
+                    <p>
+                        <span class="blue bolder bigger-150">{{course.price}}&nbsp;<i class="fa fa-rmb"></i></span>&nbsp;
+                    </p>
 
-                            <button v-on:click="del(course.id)" class="btn btn-xs btn-danger">
-                                <i class="ace-icon fa fa-trash-o bigger-120"></i>
-                            </button>
+                    <p>{{course.summary}}</p>
 
-                        </div>
+                    <p>
+                        <span class="badge badge-info">{{course.id}}</span>
+                        <span class="badge badge-info">排序：{{course.sort}}</span>
+                        <span class="badge badge-info">时长：{{course.time}}</span>
+                    </p>
 
-                    </td>
-                </tr>
-
-            </tbody>
-        </table>
+                    <p>
+                        <button v-on:click="toChapter(course)" class="btn btn-white btn-xs btn-info btn-round">
+                            大章
+                        </button>&nbsp;
+                        <button v-on:click="edit(course)" class="btn btn-white btn-xs btn-info btn-round">
+                            编辑
+                        </button>&nbsp;
+                        <button v-on:click="del(course.id)" class="btn btn-white btn-xs btn-warning btn-round">
+                            删除
+                        </button>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
 
         <!--模态框-->
         <div id="form-modal" class="modal fade" tabindex="-1" role="dialog">
@@ -256,8 +255,7 @@
                 _this.course = $.extend({}, course);
 
                 $("#form-modal").modal("show");
-            }
-            ,
+            },
 
             /**
              * 删除数据
@@ -265,7 +263,7 @@
              */
             del(id) {
                 let _this = this;
-                Confirm.show("删除课程后不可恢复111，确认删除？", function () {
+                Confirm.show("删除课程后不可恢复，确认删除？", function () {
                     Loading.show();
                     _this.$ajax.delete(process.env.VUE_APP_SERVER + '/business/admin/course/delete/' + id, _this.course).then((response) => {
                         Loading.hide();
@@ -276,12 +274,22 @@
                         }
                     });
                 })
-            }
-            ,
+            },
+
+            /**
+             * 点击大章
+             */
+            toChapter(course) {
+                let _this = this;
+                SessionStorage.set("course",course);
+                _this.$router.push("/business/chapter")
+            },
         }
     }
 </script>
 
-<style>
-
+<style scoped>
+    .caption h3 {
+        font-size: 20px;
+    }
 </style>
