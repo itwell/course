@@ -160,7 +160,7 @@
             /**
              * 保存
              */
-            save(page) {
+            save() {
                 let _this = this;
 
                 /*校验表单值是否合法*/
