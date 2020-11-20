@@ -1,7 +1,6 @@
 package com.course.business.controller.admin;
 
-
-import com.course.server.dto.PageDto;
+import com.course.server.dto.SectionPageDto;
 import com.course.server.dto.ResponseDto;
 import com.course.server.dto.SectionDto;
 import com.course.server.service.SectionService;
@@ -28,15 +27,17 @@ SectionService sectionService;
 
     /**
      * 查询大章
-     * @param pageDto
+     * @param sectionPageDto
      * @return
      */
     @PostMapping("/list")
-    public ResponseDto test(@RequestBody PageDto pageDto) {
-        logger.info("pageDto: {}",pageDto);
+    public ResponseDto test(@RequestBody SectionPageDto sectionPageDto) {
+        logger.info("pageDto: {}",sectionPageDto);
         ResponseDto responseDto = new ResponseDto();
-sectionService.list(pageDto);
-        responseDto.setContent(pageDto);
+        ValidatorUtil.require(sectionPageDto.getCourseId(), "课程ID");
+        ValidatorUtil.require(sectionPageDto.getChapterId(), "大章ID");
+        sectionService.list(sectionPageDto);
+        responseDto.setContent(sectionPageDto);
         return responseDto;
     }
 
