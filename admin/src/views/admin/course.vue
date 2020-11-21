@@ -74,6 +74,12 @@
                     <div class="modal-body">
                         <!--水平表单-->
                         <form class="form-horizontal">
+                                    <div class="form-group ">
+                                        <label class="col-sm-2 control-label">分类</label>
+                                        <div class="col-sm-10">
+                                            <ul id="tree" class="ztree"></ul>
+                                        </div>
+                                    </div>
                                     <div class="form-group">
                                         <label class="col-sm-2 control-label">名称</label>
                                         <div class="col-sm-10">
@@ -174,6 +180,7 @@
                 COURSE_LEVEL: COURSE_LEVEL,
                 COURSE_CHARGE: COURSE_CHARGE,
                 COURSE_STATUS: COURSE_STATUS,
+                Categorys: [],
             }
         },
         mounted: function () {
@@ -181,6 +188,8 @@
             // this.$parent.activeSidebar("business-course-sidebar");
             let _this = this;
             _this.$refs.pagination.size = 5;
+            _this.allCategory();
+            _this.initTree();
             _this.list(1);
         },
         methods: {
@@ -284,6 +293,44 @@
                 SessionStorage.set("course",course);
                 _this.$router.push("/business/chapter")
             },
+
+            /**
+             * 查询
+             */
+            allCategory() {
+                let _this = this;
+                Loading.show();
+                _this.$ajax.post(process.env.VUE_APP_SERVER + '/business/admin/category/all').then((response) => {
+                    Loading.hide();
+                    /*接口返回的data是ChapterDto*/
+                    let resp = response.data;
+                    _this.categorys = resp.content;
+                    //查到所有分类以后
+                    _this.initTree();
+                })
+            },
+
+            initTree(){
+                let _this = this;
+                var setting = {
+                    check: {
+                        enable: true
+                    },
+                    data: {
+                        simpleData: {
+                            idkey: "id",
+                            pIdKey: "parent",
+                            rootPId: "00000000",
+                            enable: true
+                        }
+                    }
+                };
+
+                var zNodes = _this.categorys;
+
+                $.fn.zTree.init($("#tree"), setting, zNodes);
+            }
+
         }
     }
 </script>
