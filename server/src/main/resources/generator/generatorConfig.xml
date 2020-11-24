@@ -43,6 +43,6 @@
         <!--<table tableName="test" domainObjectName="Test"/>-->
         <!--<table tableName="chapter" domainObjectName="Chapter"/>-->
         <!--<table tableName="section" domainObjectName="Section"/>-->
-        <table tableName="course_category" domainObjectName="CourseCategory"/>
+        <table tableName="course_content" domainObjectName="CourseContent"/>
     </context>
 </generatorConfiguration>
