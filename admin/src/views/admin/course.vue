@@ -201,6 +201,8 @@
                 let _this = this;
                 /*新增的时候表单不用数据*/
                 _this.course = {};
+                //新增的时候不应该有选项
+                _this.tree.checkAllNodes(false);
                 $("#form-modal").modal("show");
             },
 
@@ -269,7 +271,7 @@
                 let _this = this;
                 /*_this.chapter = chapter; 这种写法有双向数据绑定的问题*/
                 _this.course = $.extend({}, course);
-
+                _this.listCategory(course.id);
                 $("#form-modal").modal("show");
             },
 
@@ -336,8 +338,31 @@
                 var zNodes = _this.categorys;
 
                 _this.tree = $.fn.zTree.init($("#tree"), setting, zNodes);
-            }
+                //展开所有节点
+                _this.tree.expandAll(true);
+            },
 
+            /**
+             * 查找课程下所有分类
+             * @param courseId
+             */
+            listCategory(courseId) {
+                let _this = this;
+                Loading.show();
+                _this.$ajax.post(process.env.VUE_APP_SERVER + '/business/admin/course/list-category/' + courseId).then((res)=>{
+                    Loading.hide();
+                    console.log("查找课程下所有分类结果：", res);
+                    let response = res.data;
+                    let categorys = response.content;
+
+                    // 勾选查询到的分类
+                    _this.tree.checkAllNodes(false);
+                    for (let i = 0; i < categorys.length; i++) {
+                        let node = _this.tree.getNodeByParam("id", categorys[i].categoryId);
+                        _this.tree.checkNode(node, true);
+                    }
+                })
+            }
         }
     }
 </script>
