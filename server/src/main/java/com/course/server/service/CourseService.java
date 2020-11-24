@@ -35,6 +35,10 @@ public class CourseService {
 
     @Autowired
     private MyCourseMapper myCourseMapper;
+
+    @Autowired
+    private CourseCategoryService courseCategoryService;
+
     /**
      * 列表查询
      */
@@ -69,6 +73,9 @@ public class CourseService {
         }else {
         this.update(course);
         }
+
+        //批量保存课程分类
+        courseCategoryService.saveBatch(course.getId(),courseDto.getCategorys());
     }
 
     /**
@@ -76,8 +83,8 @@ public class CourseService {
     */
     private void insert(Course course) {
         Date now = new Date();
-                course.setCreatedAt(now);
-                course.setUpdatedAt(now);
+        course.setCreatedAt(now);
+        course.setUpdatedAt(now);
         course.setId(UuidUtil.getShortUuid());
         courseMapper.insert(course);
     }
