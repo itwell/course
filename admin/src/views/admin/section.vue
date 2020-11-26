@@ -163,6 +163,8 @@
             _this.course = course;
             _this.chapter = chapter;
             _this.list(1);
+            //进入大章管理的时候,还是课程管理还是激活的状态
+            this.$parent.activeSidebar("business-course-sidebar");
         },
         methods: {
             /**
