@@ -53,6 +53,9 @@
                         <button v-on:click="editContent(course)" class="btn btn-white btn-xs btn-info btn-round">
                             内容
                         </button>&nbsp;
+                        <button v-on:click="openSortModal(course)" class="btn btn-white btn-xs btn-info btn-round">
+                            排序
+                        </button>&nbsp;
                         <button v-on:click="edit(course)" class="btn btn-white btn-xs btn-info btn-round">
                             编辑
                         </button>&nbsp;
@@ -65,14 +68,14 @@
         </div>
     </div>
 
-        <!--模态框-->
+        <!--编辑模态框-->
         <div id="form-modal" class="modal fade" tabindex="-1" role="dialog">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                                 aria-hidden="true">&times;</span></button>
-                        <h4 class="modal-title">表单</h4>
+                        <h4 class="modal-title">编辑课程</h4>
                     </div>
                     <div class="modal-body">
                         <!--水平表单-->
@@ -152,8 +155,7 @@
                                     <div class="form-group">
                                         <label class="col-sm-2 control-label">顺序</label>
                                         <div class="col-sm-10">
-                                            <input v-model="course.sort" type="text" class="form-control"
-                                                   placeholder="顺序">
+                                            <input v-model="course.sort" type="text" class="form-control" placeholder="顺序" disabled>
                                         </div>
                                     </div>
                         </form>
@@ -166,6 +168,7 @@
             </div><!-- /.modal-dialog -->
         </div><!-- /.modal -->
 
+        <!--内容模态框-->
         <div id="course-content-modal" class="modal fade" tabindex="-1" role="dialog">
             <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">
@@ -203,6 +206,49 @@
 
         </div>
 
+        <!--排序模态框-->
+        <div id="course-sort-modal" class="modal fade" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title">排序</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form class="form-horizontal">
+                            <div class="form-group">
+                                <label class="control-label col-lg-3">
+                                    当前排序
+                                </label>
+                                <div class="col-lg-9">
+                                    <input class="form-control" v-model="sort.oldSort" name="oldSort" disabled>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-lg-3">
+                                    新排序
+                                </label>
+                                <div class="col-lg-9">
+                                    <input class="form-control" v-model="sort.newSort" name="newSort">
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-white btn-default btn-round" data-dismiss="modal">
+                            <i class="ace-icon fa fa-times"></i>
+                            取消
+                        </button>
+                        <button type="button" class="btn btn-white btn-info btn-round" v-on:click="updateSort()">
+                            <i class="ace-icon fa fa-plus blue"></i>
+                            更新排序
+                        </button>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div>
+
+        <!--分页插件-->
         <pagination ref="pagination" v-bind:list="list" v-bind:itemCount="8"></pagination>
 
 
@@ -225,7 +271,12 @@
                 Categorys: [],
                 tree:{},
                 saveContentLabel: "",
-                saveContentInterval: {}
+                saveContentInterval: {},
+                sort: {
+                    id:"",
+                    oldSort: 0,
+                    newSort: 0
+                }
             }
         },
         mounted: function () {
@@ -244,7 +295,9 @@
             add() {
                 let _this = this;
                 /*新增的时候表单不用数据*/
-                _this.course = {};
+                _this.course = {
+                    sort: _this.$refs.pagination.total + 1
+                };
                 //新增的时候不应该有选项
                 _this.tree.checkAllNodes(false);
                 $("#form-modal").modal("show");
@@ -470,6 +523,42 @@
                         _this.saveContentLabel = "最后保存时间：" + now;
                     } else {
                         Toast.warning(resp.message);
+                    }
+                });
+            },
+
+            /**
+             * 打开排序模态框
+             */
+            openSortModal(course){
+                let _this = this;
+                _this.sort = {
+                    id: course.id,
+                    oldSort: course.sort,
+                    newSort: course.sort
+                };
+                $("#course-sort-modal").modal("show");
+            },
+
+            /**
+             * 排序
+             */
+            updateSort() {
+                let _this = this;
+                if (_this.sort.newSort === _this.sort.oldSort) {
+                    Toast.warning("排序没有变化");
+                    return;
+                }
+                Loading.show();
+                _this.$ajax.post(process.env.VUE_APP_SERVER + "/business/admin/course/sort", _this.sort).then((res) => {
+                    let response = res.data;
+
+                    if (response.success) {
+                        Toast.success("更新排序成功");
+                        $("#course-sort-modal").modal("hide");
+                        _this.list(1);
+                    } else {
+                        Toast.error("更新排序失败");
                     }
                 });
             },
