@@ -166,7 +166,46 @@
             </div><!-- /.modal-dialog -->
         </div><!-- /.modal -->
 
+        <div id="course-content-modal" class="modal fade" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+                        <h4 class="modal-title">内容编辑</h4>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-lg-12">
+                            {{saveContentLabel}}
+                        </div>
+                    </div>
+                    <div class="modal-body">
+                        <form class="form-horizontal">
+                            <div class="form-group">
+                                <div class="col-lg-12">
+                                    <div id="content"></div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-white btn-info btn-round" v-on:click="saveContent()">
+                            <i class="ace-icon fa fa-plus blue"></i>
+                            保存
+                        </button>&nbsp;
+
+                        <button type="button" class="btn btn-white btn-default btn-round" data-dismiss="modal">
+                            <i class="ace-icon fa fa-times"></i>
+                            取消
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
         <pagination ref="pagination" v-bind:list="list" v-bind:itemCount="8"></pagination>
+
+
     </div><!-- /.span -->
 </template>
 
@@ -185,6 +224,8 @@
                 COURSE_STATUS: COURSE_STATUS,
                 Categorys: [],
                 tree:{},
+                saveContentLabel: "",
+                saveContentInterval: {}
             }
         },
         mounted: function () {
@@ -365,7 +406,73 @@
                         _this.tree.checkNode(node, true);
                     }
                 })
-            }
+            },
+
+            /**
+             * 打开内容编辑框
+             */
+            editContent(course){
+                let _this = this;
+                let id = course.id;
+                _this.course = course;
+                $("#content").summernote({
+                    focus: true,
+                    height: 300
+                });
+
+                $("#content").summernote('code', '');
+
+                Loading.show();
+                _this.$ajax.get(process.env.VUE_APP_SERVER + '/business/admin/course/find-content/' + id).then((response)=>{
+                    Loading.hide();
+                    let resp = response.data;
+
+                    if (resp.success) {
+                        //点击空白位置模态框不会消失
+                        $("#course-content-modal").modal({backdrop:'static',keyboard:false});
+                        if (resp.content) {
+                            $("#content").summernote('code', resp.content.content);
+                        }
+
+                        // 定时自动保存
+                        _this.saveContentInterval = setInterval(function() {
+                            _this.saveContent();
+                        }, 10000);
+
+                        $('#course-content-modal').on('hidden.bs.modal',function (e) {
+                            clearInterval(_this.saveContentInterval);
+                        })
+                    } else {
+                        Toast.warning(resp.message);
+                    }
+                    $("#course-content-modal").modal("show");
+                });
+
+
+            },
+
+            /**
+             * 保存内容
+             */
+            saveContent () {
+                let _this = this;
+                let content = $("#content").summernote("code");
+                _this.$ajax.post(process.env.VUE_APP_SERVER + '/business/admin/course/save-content', {
+                    id: _this.course.id,
+                    content: content
+                }).then((response)=>{
+                    Loading.hide();
+                    let resp = response.data;
+                    if (resp.success) {
+                        // Toast.success("内容保存成功");
+                        // let now = Tool.dateFormat("yyyy-MM-dd hh:mm:ss");
+                        let now = Tool.dateFormat("mm:ss");
+                        _this.saveContentLabel = "最后保存时间：" + now;
+                    } else {
+                        Toast.warning(resp.message);
+                    }
+                });
+            },
         }
     }
 </script>
