@@ -1,18 +1,41 @@
-package com.course.server.domain;
+package com.course.server.dto;
 
-public class teacher {
+
+public class TeacherDto {
+
+    /**
+     * id
+     */
     private String id;
 
+    /**
+     * 姓名
+     */
     private String name;
 
+    /**
+     * 昵称
+     */
     private String nickname;
 
+    /**
+     * 头像
+     */
     private String image;
 
+    /**
+     * 职位
+     */
     private String position;
 
+    /**
+     * 座右铭
+     */
     private String motto;
 
+    /**
+     * 简介
+     */
     private String intro;
 
     public String getId() {
@@ -71,6 +94,7 @@ public class teacher {
         this.intro = intro;
     }
 
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -87,4 +111,5 @@ public class teacher {
         sb.append("]");
         return sb.toString();
     }
+
 }

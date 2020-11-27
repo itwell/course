@@ -94,6 +94,14 @@
                                         </div>
                                     </div>
                                     <div class="form-group">
+                                        <label class="col-sm-2 control-label">讲师</label>
+                                        <div class="col-sm-10">
+                                            <select v-model="course.teacherId" class="form-control">
+                                                <option v-for="o in teachers" v-bind:value="o.id">{{o.name}}</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
                                         <label class="col-sm-2 control-label">概述</label>
                                         <div class="col-sm-10">
                                             <input v-model="course.summary" type="text" class="form-control"
@@ -276,7 +284,8 @@
                     id:"",
                     oldSort: 0,
                     newSort: 0
-                }
+                },
+                teachers: [],
             }
         },
         mounted: function () {
@@ -285,6 +294,7 @@
             let _this = this;
             _this.$refs.pagination.size = 5;
             _this.allCategory();
+            _this.allTeacher();
             _this.initTree();
             _this.list(1);
         },
@@ -401,7 +411,7 @@
             },
 
             /**
-             * 查询
+             * 查询所有分类
              */
             allCategory() {
                 let _this = this;
@@ -411,8 +421,21 @@
                     /*接口返回的data是ChapterDto*/
                     let resp = response.data;
                     _this.categorys = resp.content;
-                    //查到所有分类以后
+                    //查到所有分类以后,把树展开
                     _this.initTree();
+                })
+            },
+            /**
+             * 查询所有老师
+             */
+            allTeacher() {
+                let _this = this;
+                Loading.show();
+                _this.$ajax.post(process.env.VUE_APP_SERVER + '/business/admin/teacher/all').then((response) => {
+                    Loading.hide();
+                    /*接口返回的data是ChapterDto*/
+                    let resp = response.data;
+                    _this.teachers = resp.content;
                 })
             },
 

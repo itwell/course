@@ -1,15 +1,17 @@
 package com.course.business.controller.admin;
 
 
+import com.course.server.dto.TeacherDto;
 import com.course.server.dto.PageDto;
 import com.course.server.dto.ResponseDto;
-import com.course.server.dto.teacherDto;
-import com.course.server.service.teacherService;
+import com.course.server.service.TeacherService;
 import com.course.server.util.ValidatorUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * @author itwell
@@ -17,14 +19,25 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @RequestMapping("/admin/teacher")
-public class teacherController {
+public class TeacherController {
 
-    private static final Logger logger = LoggerFactory.getLogger(teacherController.class);
+    private static final Logger logger = LoggerFactory.getLogger(TeacherController.class);
     /*表示controller的业务*/
     public static final String BUSINESS_NAME = "讲师";
 
     @Autowired
-    teacherService teacherService;
+    TeacherService teacherService;
+
+    /**
+     * 查询所有
+     */
+    @PostMapping("/all")
+    public ResponseDto all() {
+        ResponseDto responseDto = new ResponseDto();
+        List<TeacherDto> teacherDtoList = teacherService.all();
+        responseDto.setContent(teacherDtoList);
+        return responseDto;
+    }
 
     /**
      * 查询讲师
@@ -46,7 +59,7 @@ public class teacherController {
      * @return
      */
     @PostMapping("/save")
-    public ResponseDto save(@RequestBody teacherDto teacherDto) {
+    public ResponseDto save(@RequestBody TeacherDto teacherDto) {
         logger.info("pageDto: {}",teacherDto);
 
         ValidatorUtil.require(teacherDto.getName(), "姓名");
