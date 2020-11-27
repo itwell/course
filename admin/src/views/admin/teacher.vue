@@ -16,8 +16,10 @@
             <div v-for="teacher in teachers" class="col-md-3">
                 <div>
           <span class="profile-picture">
-            <img v-show="!teacher.image" class="editable img-responsive editable-click editable-empty" src="/static/image/teacher/avator/avator1.jpg" v-bind:title="teacher.intro"/>
-            <img v-show="teacher.image" class="editable img-responsive editable-click editable-empty" v-bind:src="teacher.image" v-bind:title="teacher.intro"/>
+            <img v-show="!teacher.image" class="editable img-responsive editable-click editable-empty"
+                 src="/static/image/teacher/avator/avator1.jpg" v-bind:title="teacher.intro"/>
+            <img v-show="teacher.image" class="editable img-responsive editable-click editable-empty"
+                 v-bind:src="teacher.image" v-bind:title="teacher.intro"/>
           </span>
 
                     <div class="space-4"></div>
@@ -71,42 +73,42 @@
                     <div class="modal-body">
                         <!--水平表单-->
                         <form class="form-horizontal">
-                                      <div class="form-group">
-                                          <label class="col-sm-2 control-label">姓名</label>
-                                          <div class="col-sm-10">
-                                              <input v-model="teacher.name" class="form-control">
-                                          </div>
-                                      </div>
-                                      <div class="form-group">
-                                          <label class="col-sm-2 control-label">昵称</label>
-                                          <div class="col-sm-10">
-                                              <input v-model="teacher.nickname" class="form-control">
-                                          </div>
-                                      </div>
-                                      <div class="form-group">
-                                          <label class="col-sm-2 control-label">头像</label>
-                                          <div class="col-sm-10">
-                                              <input v-model="teacher.image" class="form-control">
-                                          </div>
-                                      </div>
-                                      <div class="form-group">
-                                          <label class="col-sm-2 control-label">职位</label>
-                                          <div class="col-sm-10">
-                                              <input v-model="teacher.position" class="form-control">
-                                          </div>
-                                      </div>
-                                      <div class="form-group">
-                                          <label class="col-sm-2 control-label">座右铭</label>
-                                          <div class="col-sm-10">
-                                              <input v-model="teacher.motto" class="form-control">
-                                          </div>
-                                      </div>
-                                      <div class="form-group">
-                                          <label class="col-sm-2 control-label">简介</label>
-                                          <div class="col-sm-10">
-                                              <textarea v-model="teacher.intro" class="form-control" rows="5"></textarea>
-                                          </div>
-                                      </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">姓名</label>
+                                <div class="col-sm-10">
+                                    <input v-model="teacher.name" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">昵称</label>
+                                <div class="col-sm-10">
+                                    <input v-model="teacher.nickname" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">头像</label>
+                                <div class="col-sm-10">
+                                    <input v-model="teacher.image" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">职位</label>
+                                <div class="col-sm-10">
+                                    <input v-model="teacher.position" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">座右铭</label>
+                                <div class="col-sm-10">
+                                    <input v-model="teacher.motto" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">简介</label>
+                                <div class="col-sm-10">
+                                    <textarea v-model="teacher.intro" class="form-control" rows="5"></textarea>
+                                </div>
+                            </div>
                         </form>
                     </div>
                     <div class="modal-footer">
@@ -129,7 +131,7 @@
         name: "business-teacher",
         data: function () {
             return {
-                teacher:{},
+                teacher: {},
                 teachers: [],
             }
         },
@@ -162,11 +164,11 @@
                     /*根据pagination名字获取组件*/
                     size: _this.$refs.pagination.size,
                 }).then((response) => {
-                            Loading.hide();
-                            /*接口返回的data是ChapterDto*/
-                            let resp = response.data;
-                            _this.teachers = resp.content.list;
-                            _this.$refs.pagination.render(page, resp.content.total);
+                    Loading.hide();
+                    /*接口返回的data是ChapterDto*/
+                    let resp = response.data;
+                    _this.teachers = resp.content.list;
+                    _this.$refs.pagination.render(page, resp.content.total);
                 })
             },
 
@@ -178,30 +180,30 @@
 
                 /*校验表单值是否合法*/
                 if (1 != 1
-                      || !Validator.require(_this.teacher.name, "姓名")
-                      || !Validator.length(_this.teacher.name, "姓名", 1, 50)
-                      || !Validator.length(_this.teacher.nickname, "昵称", 1, 50)
-                      || !Validator.length(_this.teacher.image, "头像", 1, 100)
-                      || !Validator.length(_this.teacher.position, "职位", 1, 50)
-                      || !Validator.length(_this.teacher.motto, "座右铭", 1, 50)
-                      || !Validator.length(_this.teacher.intro, "简介", 1, 500)
+                    || !Validator.require(_this.teacher.name, "姓名")
+                    || !Validator.length(_this.teacher.name, "姓名", 1, 50)
+                    || !Validator.length(_this.teacher.nickname, "昵称", 1, 50)
+                    || !Validator.length(_this.teacher.image, "头像", 1, 100)
+                    || !Validator.length(_this.teacher.position, "职位", 1, 50)
+                    || !Validator.length(_this.teacher.motto, "座右铭", 1, 50)
+                    || !Validator.length(_this.teacher.intro, "简介", 1, 500)
                 ) {
                     return;
                 }
 
                 Loading.show();
                 _this.$ajax.post(process.env.VUE_APP_SERVER + '/business/admin/teacher/save', _this.teacher)
-                        .then((response) => {
-                            Loading.hide();
-                            let resp = response.data;
-                            if (resp.success) {
-                                $("#form-modal").modal("hide");
-                                Toast.success("保存成功");
-                                _this.list(1);
-                            } else {
-                                Toast.warning(resp.message);
-                            }
-                        })
+                    .then((response) => {
+                        Loading.hide();
+                        let resp = response.data;
+                        if (resp.success) {
+                            $("#form-modal").modal("hide");
+                            Toast.success("保存成功");
+                            _this.list(1);
+                        } else {
+                            Toast.warning(resp.message);
+                        }
+                    })
             },
 
             /**
