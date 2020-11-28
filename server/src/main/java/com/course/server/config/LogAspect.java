@@ -1,4 +1,4 @@
-package com.course.business.config;
+package com.course.server.config;
 
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.support.spring.PropertyPreFilters;

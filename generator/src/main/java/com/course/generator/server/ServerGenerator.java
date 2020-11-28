@@ -14,7 +14,7 @@ public class ServerGenerator {
     static String MODULE = "business";
     static String toDtoPath = "server\\src\\main\\java\\com\\course\\server\\dto\\";
     static String toServicePath = "server\\src\\main\\java\\com\\course\\server\\service\\";
-    static String toControllerPath = MODULE+"\\src\\main\\java\\com\\course\\"+MODULE+"\\controller\\admin\\";
+    static String toControllerPath = MODULE+"\\src\\main\\java\\com\\course\\"+MODULE+"\\config\\admin\\";
     static String generatorConfigPath = "server\\src\\main\\resources\\generator\\generatorConfig.xml";
 
     public static void main(String[] args) throws Exception {
@@ -54,8 +54,8 @@ public class ServerGenerator {
         FreemarkerUtil.initConfig("service.ftl");
         FreemarkerUtil.generator(toServicePath+Domain+"Service.java",map);
 
-        /*controller*/
-        FreemarkerUtil.initConfig("controller.ftl");
+        /*config*/
+        FreemarkerUtil.initConfig("config.ftl");
         FreemarkerUtil.generator(toControllerPath+Domain+"Controller.java",map);
 
         FreemarkerUtil.initConfig("dto.ftl");
