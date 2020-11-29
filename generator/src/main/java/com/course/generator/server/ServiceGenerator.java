@@ -10,11 +10,11 @@ import org.dom4j.io.SAXReader;
 import java.io.File;
 import java.util.*;
 
-public class ServerGenerator {
-    static String MODULE = "business";
+public class ServiceGenerator {
+    static String MODULE = "file";
     static String toDtoPath = "server\\src\\main\\java\\com\\course\\server\\dto\\";
     static String toServicePath = "server\\src\\main\\java\\com\\course\\server\\service\\";
-    static String toControllerPath = MODULE+"\\src\\main\\java\\com\\course\\"+MODULE+"\\config\\admin\\";
+    static String toControllerPath = MODULE+"\\src\\main\\java\\com\\course\\"+MODULE+"\\controller\\admin\\";
     static String generatorConfigPath = "server\\src\\main\\resources\\generator\\generatorConfig.xml";
 
     public static void main(String[] args) throws Exception {
@@ -55,7 +55,7 @@ public class ServerGenerator {
         FreemarkerUtil.generator(toServicePath+Domain+"Service.java",map);
 
         /*config*/
-        FreemarkerUtil.initConfig("config.ftl");
+        FreemarkerUtil.initConfig("controller.ftl");
         FreemarkerUtil.generator(toControllerPath+Domain+"Controller.java",map);
 
         FreemarkerUtil.initConfig("dto.ftl");
