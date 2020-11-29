@@ -92,7 +92,7 @@
                                         <i class="ace-icon fa fa-upload"></i>
                                         上传头像
                                     </button>
-                                    <input class="hidden" type="file" v-on:change="uploadImage()" id="file-upload-input">
+                                    <input class="hidden" type="file" ref="file" v-on:change="uploadImage()" id="file-upload-input">
                                     <div v-show="teacher.image" class="row">
                                         <div class="col-md-4">
                                             <img v-bind:src="teacher.image" class="img-responsive">
@@ -249,9 +249,28 @@
                 let _this = this;
                 //使用表单的方式提交图片
                 let formData = new window.FormData();
-                //key file必须和后端controller参数名一致
+                let file = _this.$refs.file.files[0];
+
+                // 判断文件格式
+                let suffixs = ["jsp","jpeg","png"];
+                let fileName = file.name;
+                let suffix = fileName.substring(fileName.lastIndexOf(".") + 1, fileName.length).toLowerCase();
+                let validateSuffix = false;
+                for (let i = 0; i < suffixs.length; i++) {
+                    if (suffixs[i].toLowerCase() === suffix) {
+                        validateSuffix = true;
+                        break;
+                    }
+                }
+                if (!validateSuffix) {
+                    Toast.warning("文件格式不正确！只支持上传：" + suffixs.join(","));
+                    $("#" + _this.inputId + "-input").val("");
+                    return;
+                }
+
                 console.log(formData);
                 console.log(document.querySelector('#file-upload-input').files[0]);
+                //key file必须和后端controller参数名一致
                 formData.append('file',document.querySelector('#file-upload-input').files[0]);
                 console.log(formData);
                 Loading.show();
