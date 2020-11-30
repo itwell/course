@@ -65,7 +65,7 @@
                 let file = _this.$refs.file.files[0];
 
                 // 判断文件格式
-                let suffixs = ["jpg","jpeg","png"];
+                let suffixs = _this.suffixs;
                 let fileName = file.name;
                 let suffix = fileName.substring(fileName.lastIndexOf(".") + 1, fileName.length).toLowerCase();
                 let validateSuffix = false;

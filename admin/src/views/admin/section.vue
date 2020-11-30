@@ -95,8 +95,16 @@
                                     <div class="form-group">
                                         <label class="col-sm-2 control-label">视频</label>
                                         <div class="col-sm-10">
-                                            <input v-model="section.video" type="text" class="form-control"
-                                                   placeholder="视频">
+                                            <file v-bind:input-id="'vide-upload'"
+                                                  v-bind:text="'上传视频'"
+                                                  v-bind:suffixs="['mp4']"
+                                                  v-bind:use="FILE_USE.COURSE.key"
+                                                  v-bind:after-upload="afterUpload"></file>
+                                            <div v-show="section.video" class="row">
+                                                <div class="col-md-9">
+                                                    <video v-bind:src="section.video" id="video" controls="controls"></video>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="form-group">
@@ -137,15 +145,17 @@
 
 <script>
     import Pagination from "../../components/pagination";
+    import File from "../../components/file";
 
     export default {
-        components: {Pagination},
+        components: {File,Pagination},
         name: "business-section",
         data: function () {
             return {
                 section: {},
                 sections: [],
                 SECTION_CHARGE: SECTION_CHARGE ,
+                FILE_USE: FILE_USE,
                 course: {},
                 chapter: {},
         }
@@ -249,7 +259,7 @@
              */
             del(id) {
                 let _this = this;
-                Confirm.show("删除小节后不可恢复111，确认删除？", function () {
+                Confirm.show("删除小节后不可恢复，确认删除？", function () {
                     Loading.show();
                     _this.$ajax.delete(process.env.VUE_APP_SERVER + '/business/admin/section/delete/' + id, _this.section).then((response) => {
                         Loading.hide();
@@ -260,12 +270,31 @@
                         }
                     });
                 })
-            }
-            ,
+            },
+            afterUpload(resp) {
+                let _this = this;
+                let video = resp.content.path;
+                _this.section.video = video;
+                _this.getTime();
+            },
+
+            /**
+             * 获取时长
+             */
+            getTime(){
+                let _this = this;
+                let ele = document.getElementById("video");
+                //把时长换算成10进制的整数
+                _this.section.time = parseInt(ele.duration,10);
+            },
         }
     }
 </script>
 
 <style>
-
+    video{
+        width: 100%;
+        height: auto;
+        margin-top: 10px;
+    }
 </style>
