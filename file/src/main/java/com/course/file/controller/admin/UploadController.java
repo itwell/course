@@ -41,7 +41,7 @@ public class UploadController {
 
     @RequestMapping("/upload")
     public ResponseDto test(@RequestParam MultipartFile file, String use) throws IOException {
-        logger.info("上传文件开始:{}",file);
+        logger.info("上传文件开始:{}", file);
         logger.info(file.getOriginalFilename());
         logger.info(String.valueOf(file.getSize()));
 
@@ -49,7 +49,7 @@ public class UploadController {
         FileUseEnum useEnum = FileUseEnum.getByCode(use);
         String fileName = file.getOriginalFilename();
         //获取文件后缀名
-        String suffix = fileName.substring(fileName.lastIndexOf(".")+1).toLowerCase();
+        String suffix = fileName.substring(fileName.lastIndexOf(".") + 1).toLowerCase();
         String key = UuidUtil.getShortUuid();
 
         //如果文件夹不存在则创建
@@ -73,11 +73,12 @@ public class UploadController {
         fileDto.setName(fileName);
         fileDto.setSize(Math.toIntExact(file.getSize()));
         fileDto.setSuffix(suffix);
-        fileDto.setUse("");
+        fileDto.setUse(use);
         fileService.save(fileDto);
 
         ResponseDto responseDto = new ResponseDto();
-        responseDto.setContent(FILE_DOMAIN + path);
+        fileDto.setPath(FILE_DOMAIN + path);
+        responseDto.setContent(fileDto);
         return responseDto;
     }
 }

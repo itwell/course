@@ -134,9 +134,10 @@
 
 <script>
     import Pagination from "../../components/pagination";
+    import File from "../../components/file";
 
     export default {
-        components: {Pagination},
+        components: {File, Pagination},
         name: "business-teacher",
         data: function () {
             return {

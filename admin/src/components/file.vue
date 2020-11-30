@@ -1,47 +1,18 @@
 <template>
     <div class="page-content">
-        <p>
-            <button v-on:click="list(1)" v-bind:list="list" class="btn btn-white btn-default btn-round">
-                <i class="ace-icon fa fa-refresh green"></i>
-                刷新
+        <div>
+            <button type="button" v-on:click="selectFile()" class="btn btn-white btn-default btn-round">
+                <i class="ace-icon fa fa-upload"></i>
+                {{text}}
             </button>
-        </p>
-
-        <table id="simple-table" class="table  table-bordered table-hover">
-            <thead>
-            <tr>
-                <th>id</th>
-                <th>相对路径</th>
-                <th>文件名</th>
-                <th>后缀</th>
-                <th>大小</th>
-                <th>用途</th>
-            </tr>
-            </thead>
-
-            <tbody>
-            <tr v-for="file in files">
-                <td>{{file.id}}</td>
-                <td>{{file.path}}</td>
-                <td>{{file.name}}</td>
-                <td>{{file.suffix}}</td>
-                <td>{{file.size | formatFileSize}}</td>
-                <td>{{FILE_USE | optionKV(file.use)}}</td>
-            </tr>
-
-            </tbody>
-        </table>
-
-        <pagination ref="pagination" v-bind:list="list" v-bind:itemCount="8"></pagination>
+            <input class="hidden" type="file" ref="file" v-on:change="uploadFile()" v-bind:id="inputId+'-input'">
+        </div>
     </div><!-- /.span -->
 </template>
 
 <script>
-    import Pagination from "../../components/pagination";
-
     export default {
-        components: {Pagination},
-        name: "file-file",
+        name: "file",
         props: {
             text: {
                 default: "上传文件"
@@ -66,13 +37,6 @@
                 files: [],
                 FILE_USE: FILE_USE,
             }
-        },
-        mounted: function () {
-            //激活侧边栏状态写法1
-            // this.$parent.activeSidebar("file-file-sidebar");
-            let _this = this;
-            _this.$refs.pagination.size = 5;
-            _this.list(1);
         },
         methods: {
             /**
@@ -117,8 +81,9 @@
                     return;
                 }
 
+                let inputId = document.querySelector("#" + _this.inputId + "-input");
                 console.log(formData);
-                console.log(document.querySelector('#file-upload-input').files[0]);
+                console.log(inputId.files[0]);
                 //key file必须和后端controller参数名一致
                 formData.append('file',file);
                 formData.append('use', _this.use);
