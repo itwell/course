@@ -51,9 +51,9 @@ public class UploadController {
         //保存文件到本地
         FileUseEnum useEnum = FileUseEnum.getByCode(use);
 
-        //如果文件夹不存在则创建
         String dir = useEnum.name().toLowerCase();
         File fullDir = new File(FILE_PATH + dir);
+        //如果文件夹不存在则创建
         if (!fullDir.exists()) {
             fullDir.mkdir();
         }

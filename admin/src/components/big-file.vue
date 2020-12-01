@@ -93,9 +93,9 @@
                 //文件分片
                 let shardSize = 20 * 1024 * 1024;    //以20MB为一个分片
                 // let shardSize = 50 * 1024;    //以50KB为一个分片
-                let shardIndex = 1;		//分片索引 1表示第一个分片
+                let shardIndex = 6;		//分片索引 1表示第一个分片
                 let start = (shardIndex - 1) * shardSize; // 当前分片起始位置
-                let end = Math.min(fiel.size, start + shardSize);   //当前分片结束的位置
+                let end = Math.min(file.size, start + shardSize);   //当前分片结束的位置
                 let fileShard = file.slice(start,end); //从文件中截取当前的分片数据
 
                 let size = file.size;
@@ -144,14 +144,13 @@
 
 
                     Loading.show();
-                    _this.$ajax.post(process.env.VUE_APP_SERVER + '/file/admin/upload', formData).then((response) => {
+                    _this.$ajax.post(process.env.VUE_APP_SERVER + '/file/admin/upload', param).then((response) => {
                         Loading.hide();
                         let resp = response.data;
                         console.log("上传文件成功：", resp);
                         _this.afterUpload(resp);
                         let image = resp.content;
                         $("#" + _this.inputId + "-input").val("");});
-
                 };
                 fileReader.readAsDataURL(fileShard)
             },
