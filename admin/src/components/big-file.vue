@@ -104,7 +104,8 @@
                 let inputId = document.querySelector("#" + _this.inputId + "-input");
                 console.log(formData);
                 console.log(inputId.files[0]);
-                //key file必须和后端controller参数名一致
+
+                /*//key file必须和后端controller参数名一致
                 formData.append('shard', fileShard);
                 formData.append('shardIndex', shardIndex);
                 formData.append('shardSize',shardSize);
@@ -121,7 +122,38 @@
                     _this.afterUpload(resp);
                     let image = resp.content;
                     $("#" + _this.inputId + "-input").val("");
-                });
+                });*/
+
+                //将图片转为base64进行存储
+               let fileReader = new FileReader();
+                fileReader.onload = function (e) {
+                    let base64 = e.target.result;
+                    console.log("base64:",base64);
+
+                    let param = {
+                        'shard' : base64,
+                        'shardIndex': shardIndex,
+                        'shardSize': shardSize,
+                        'shardTotal': shardTotal,
+                        'use': _this.use,
+                        'name': file.name,
+                        'suffix': suffix,
+                        'size': file.size,
+                        'key': key62
+                    };
+
+
+                    Loading.show();
+                    _this.$ajax.post(process.env.VUE_APP_SERVER + '/file/admin/upload', formData).then((response) => {
+                        Loading.hide();
+                        let resp = response.data;
+                        console.log("上传文件成功：", resp);
+                        _this.afterUpload(resp);
+                        let image = resp.content;
+                        $("#" + _this.inputId + "-input").val("");});
+
+                };
+                fileReader.readAsDataURL(fileShard)
             },
             selectFile() {
                 let _this = this;
