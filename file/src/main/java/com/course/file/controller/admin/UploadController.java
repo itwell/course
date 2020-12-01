@@ -59,7 +59,11 @@ public class UploadController {
         }
 
         //不同操作系统File.separator 目录分隔符
-        String path = dir + File.separator + key + "." + suffix;
+        //String path = dir + File.separator + key + "." + suffix + "." + fileDto.getShardIndex();
+        String path = new StringBuffer(dir)
+                        .append(File.separator)
+                        .append(key).append(".")
+                        .append(suffix).toString();
         String fullPath = FILE_PATH + path;
         File dest = new File(fullPath);
         shard.transferTo(dest);
