@@ -13,6 +13,7 @@ import com.github.pagehelper.util.StringUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
@@ -33,7 +34,7 @@ public class FileService {
      */
     public void list(PageDto pageDto) {
         //分页
-        PageHelper.startPage(pageDto.getPage(),pageDto.getSize());
+        PageHelper.startPage(pageDto.getPage(), pageDto.getSize());
 
         FileExample fileExample = new FileExample();
         List<File> fileList = fileMapper.selectByExample(fileExample);
@@ -42,50 +43,63 @@ public class FileService {
         pageDto.setTotal(pageInfo.getTotal());
 
         List<FileDto> FileDtoList = new ArrayList<FileDto>();
-                for (int i = 0; i < fileList.size(); i++) {
-                File file = fileList.get(i);
-                FileDto fileDto = new FileDto();
-                BeanUtils.copyProperties(file,fileDto);
-                FileDtoList.add(fileDto);
-                }
-                pageDto.setList(FileDtoList);
+        for (int i = 0; i < fileList.size(); i++) {
+            File file = fileList.get(i);
+            FileDto fileDto = new FileDto();
+            BeanUtils.copyProperties(file, fileDto);
+            FileDtoList.add(fileDto);
+        }
+        pageDto.setList(FileDtoList);
     }
 
     /**
-    * 保存，id有值时更新，无值时新增
-    */
+     * 保存，id有值时更新，无值时新增
+     */
     public void save(FileDto fileDto) {
         File file = CopyUtil.copy(fileDto, File.class);
-        if(StringUtils.isEmpty(fileDto.getId())){
-        this.insert(file);
-        }else {
-        this.update(file);
+        File fileDb = selectByKey(fileDto.getKey());
+        if (fileDb == null) {
+            this.insert(file);
+        } else {
+            fileDb.setShardIndex(fileDto.getShardIndex());
+            this.update(fileDb);
         }
     }
 
     /**
-    * 新增
-    */
+     * 新增
+     */
     private void insert(File file) {
         Date now = new Date();
-                file.setCreatedAt(now);
-                file.setUpdatedAt(now);
+        file.setCreatedAt(now);
+        file.setUpdatedAt(now);
         file.setId(UuidUtil.getShortUuid());
         fileMapper.insert(file);
     }
 
     /**
-    * 更新
-    */
+     * 更新
+     */
     private void update(File file) {
-                file.setUpdatedAt(new Date());
+        file.setUpdatedAt(new Date());
         fileMapper.updateByPrimaryKey(file);
     }
 
     /**
-    * 删除
-    */
+     * 删除
+     */
     public void delete(String id) {
         fileMapper.deleteByPrimaryKey(id);
+    }
+
+    public File selectByKey(String key) {
+        FileExample example = new FileExample();
+        example.createCriteria().andKeyEqualTo(key);
+        List<File> fileList = fileMapper.selectByExample(example);
+        if (CollectionUtils.isEmpty(fileList)) {
+            return null;
+        } else {
+            return fileList.get(0);
+        }
     }
 }
