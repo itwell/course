@@ -5,7 +5,6 @@ import com.course.server.dto.FileDto;
 import com.course.server.dto.ResponseDto;
 import com.course.server.enums.FileUseEnum;
 import com.course.server.service.FileService;
-import com.course.server.util.UuidUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,17 +42,19 @@ public class UploadController {
     private FileService fileService;
 
     @RequestMapping("/upload")
-    public ResponseDto test(@RequestParam MultipartFile file, String use) throws IOException {
-        logger.info("上传文件开始:{}", file);
-        logger.info(file.getOriginalFilename());
-        logger.info(String.valueOf(file.getSize()));
+    public ResponseDto test(@RequestParam MultipartFile shard,
+                                            String use,
+                                            String name,
+                                            String suffix,
+                                            Integer size,
+                                            Integer shardIndex,
+                                            Integer shardSize,
+                                            Integer shardTotal,
+                                            String key) throws IOException {
+        logger.info("上传文件开始");
 
         //保存文件到本地
         FileUseEnum useEnum = FileUseEnum.getByCode(use);
-        String fileName = file.getOriginalFilename();
-        //获取文件后缀名
-        String suffix = fileName.substring(fileName.lastIndexOf(".") + 1).toLowerCase();
-        String key = UuidUtil.getShortUuid();
 
         //如果文件夹不存在则创建
         String dir = useEnum.name().toLowerCase();
@@ -66,17 +67,20 @@ public class UploadController {
         String path = dir + File.separator + key + "." + suffix;
         String fullPath = FILE_PATH + path;
         File dest = new File(fullPath);
-        file.transferTo(dest);
-
+        shard.transferTo(dest);
         logger.info(dest.getAbsolutePath());
 
         logger.info("保存文件记录开始");
         FileDto fileDto = new FileDto();
         fileDto.setPath(path);
-        fileDto.setName(fileName);
-        fileDto.setSize(Math.toIntExact(file.getSize()));
+        fileDto.setName(name);
+        fileDto.setSize(size);
         fileDto.setSuffix(suffix);
         fileDto.setUse(use);
+        fileDto.setShardIndex(shardIndex);
+        fileDto.setShardSize(shardSize);
+        fileDto.setShardTotal(shardTotal);
+        fileDto.setKey(key);
         fileService.save(fileDto);
 
         ResponseDto responseDto = new ResponseDto();

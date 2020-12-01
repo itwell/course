@@ -64,6 +64,15 @@
                 let formData = new window.FormData();
                 let file = _this.$refs.file.files[0];
 
+                console.log(file);
+
+                let key = hex_md5(file);
+                let key10 = parseInt(key,16);
+                //26个大写字母 + 26个小写字母 + 10个阿拉伯数字 共62个字符
+                let key62 = Tool._10to62(key10);
+                console.log(key,key10,key62);
+
+
                 // 判断文件格式
                 let suffixs = _this.suffixs;
                 let fileName = file.name;
@@ -89,12 +98,21 @@
                 let end = Math.min(fiel.size, start + shardSize);   //当前分片结束的位置
                 let fileShard = file.slice(start,end); //从文件中截取当前的分片数据
 
+                let size = file.size;
+                let shardTotal = Math.ceil(size / shardSize); //总片数
+
                 let inputId = document.querySelector("#" + _this.inputId + "-input");
                 console.log(formData);
                 console.log(inputId.files[0]);
                 //key file必须和后端controller参数名一致
-                formData.append('file', fileShard);
+                formData.append('shard', fileShard);
+                formData.append('shardIndex', shardIndex);
+                formData.append('shardSize',shardSize);
+                formData.append('shardTotal',shardTotal);
                 formData.append('use', _this.use);
+                formData.append('name',file.name);
+                formData.append('suffix',suffix);
+                formData.append('key',key62);
                 Loading.show();
                 _this.$ajax.post(process.env.VUE_APP_SERVER + '/file/admin/upload', formData).then((response) => {
                     Loading.hide();
