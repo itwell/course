@@ -192,3 +192,6 @@ create table `course_content_file` (
   `size` int comment '大小|字节b',
   primary key (`id`)
 ) engine=innodb default charset=utf8mb4 comment='课程内容文件';
+
+-- 修改小节的表结构
+alter table `section` add column (`vod` char(32) comment 'vod|阿里云vod');
