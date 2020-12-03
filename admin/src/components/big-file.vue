@@ -66,7 +66,7 @@
 
                 console.log(file);
 
-                let key = hex_md5(file);
+                let key = hex_md5(file.name + file.size + file.type);
                 let key10 = parseInt(key, 16);
                 //26个大写字母 + 26个小写字母 + 10个阿拉伯数字 共62个字符
                 let key62 = Tool._10to62(key10);
