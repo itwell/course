@@ -14,6 +14,7 @@ module.exports = {
         'vue/no-unused-vars': 'off',
         /*没有用到的变量不报错*/
         'no-unused-vars': 'off',
+        'vue/no-unused-compoents' : 'off',
         'vue/require-v-for-key': 'off',
     },
     parserOptions: {
