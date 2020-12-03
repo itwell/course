@@ -159,16 +159,18 @@
                 let fileShard = _this.getFileShard(shardIndex,shardSize);
                 //将图片转为base64进行存储
                 let fileReader = new FileReader();
+
+                Progress.show((parseInt(shardIndex - 1) / shardTotal) * 100);
+
                 fileReader.onload = function (e) {
                     let base64 = e.target.result;
                     // console.log("base64:",base64);
                     param.shard = base64;
 
-                    Loading.show();
                     _this.$ajax.post(process.env.VUE_APP_SERVER + '/file/admin/upload', param).then((response) => {
-                        Loading.hide();
                         let resp = response.data;
                         console.log("上传文件成功：", resp);
+                        Progress.show(parseInt(shardIndex * 100 / shardTotal));
                         if (shardIndex < shardTotal) {
                             //上传下一个分片
                             param.shardIndex = param.shardIndex + 1;
@@ -177,6 +179,7 @@
                             }*/
                             _this.upload(param);
                         } else {
+                            Progress.hide();
                             //所有分片全部上传完之后做的事情
                             _this.afterUpload(resp);
                             $("#" + _this.inputId + "-input").val("");
