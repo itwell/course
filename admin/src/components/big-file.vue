@@ -115,8 +115,40 @@
                     'key': key62
                 };
 
-                _this.upload(param);
+                _this.check(param);
 
+            },
+
+            /**
+             * 检查文件状态，是否已上传过？传到第几个分片？
+             */
+            check (param) {
+                let _this = this;
+                _this.$ajax.get(process.env.VUE_APP_SERVER + '/file/admin/check/' + param.key).then((response)=>{
+                    let resp = response.data;
+                    if (resp.success) {
+                        let obj = resp.content;
+                        if (!obj) {
+                            // 如果没有分片数据
+                            param.shardIndex = 1;
+                            console.log("没有找到文件记录，从分片1开始上传");
+                            _this.upload(param);
+                        } else if (obj.shardIndex === obj.shardTotal) {
+                            // 已上传分片 = 分片总数，说明分片已全部上传完，不需要再上传
+                            Toast.success("文件极速秒传成功！");
+                            _this.afterUpload(resp);
+                            $("#" + _this.inputId + "-input").val("");
+                        }  else {
+                            // 如果有分片数据
+                            param.shardIndex = obj.shardIndex + 1;
+                            console.log("找到文件记录，从分片" + param.shardIndex + "开始上传");
+                            _this.upload(param);
+                        }
+                    } else {
+                        Toast.warning("文件上传失败");
+                        $("#" + _this.inputId + "-input").val("");
+                    }
+                })
             },
 
             upload: function (param) {
@@ -140,13 +172,16 @@
                         if (shardIndex < shardTotal) {
                             //上传下一个分片
                             param.shardIndex = param.shardIndex + 1;
+/*                            if (param.shardIndex === 3){
+                                return
+                            }*/
                             _this.upload(param);
                         } else {
+                            //所有分片全部上传完之后做的事情
                             _this.afterUpload(resp);
+                            $("#" + _this.inputId + "-input").val("");
                         }
                         _this.afterUpload(resp);
-                        let image = resp.content;
-                        $("#" + _this.inputId + "-input").val("");
                     });
                 };
                 fileReader.readAsDataURL(fileShard)

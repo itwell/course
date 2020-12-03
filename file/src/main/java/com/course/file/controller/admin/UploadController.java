@@ -126,5 +126,33 @@ public class UploadController {
             }
         }
         logger.info("合并分片结束======================>");
+
+        //释放对分片文件的占用
+        System.gc();
+        //给java虚拟机一定的时间让它把手头的工作都做完
+        Thread.sleep(100);
+
+        // 删除分片
+        logger.info("删除分片开始");
+        for (int i = 0; i < shardTotal; i++) {
+            String filePath = FILE_PATH + path + "." + (i + 1);
+            File file = new File(filePath);
+            boolean result = file.delete();
+            logger.info("删除{}，{}", filePath, result ? "成功" : "失败");
+        }
+        logger.info("删除分片结束");
+    }
+
+    @GetMapping("/check/{key}")
+    public ResponseDto check(@PathVariable String key) throws Exception {
+        logger.info("检查上传分片开始：{}", key);
+        ResponseDto responseDto = new ResponseDto();
+        FileDto fileDto = fileService.findByKey(key);
+        //数据库里面放的是相对路径
+        if(fileDto != null){
+            fileDto.setPath(FILE_DOMAIN + fileDto.getPath());
+        }
+        responseDto.setContent(fileDto);
+        return responseDto;
     }
 }
