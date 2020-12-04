@@ -93,6 +93,9 @@ public class OssController{
 
         ObjectMetadata meta = new ObjectMetadata();
         // 指定上传的内容类型。
+        //oss上传视频
+        //meta.setContentType("video/mp4");
+        //oss上传其它
         meta.setContentType("text/plain");
 
         // 通过AppendObjectRequest设置多个参数。
