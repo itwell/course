@@ -27,6 +27,8 @@ public class File {
 
     private String key;
 
+    private String vod;
+
     public String getId() {
         return id;
     }
@@ -123,25 +125,31 @@ public class File {
         this.key = key;
     }
 
+    public String getVod() {
+        return vod;
+    }
+
+    public void setVod(String vod) {
+        this.vod = vod;
+    }
+
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(getClass().getSimpleName());
-        sb.append(" [");
-        sb.append("Hash = ").append(hashCode());
-        sb.append(", id=").append(id);
-        sb.append(", path=").append(path);
-        sb.append(", name=").append(name);
-        sb.append(", suffix=").append(suffix);
+        final StringBuffer sb = new StringBuffer("File{");
+        sb.append("id='").append(id).append('\'');
+        sb.append(", path='").append(path).append('\'');
+        sb.append(", name='").append(name).append('\'');
+        sb.append(", suffix='").append(suffix).append('\'');
         sb.append(", size=").append(size);
-        sb.append(", use=").append(use);
+        sb.append(", use='").append(use).append('\'');
         sb.append(", createdAt=").append(createdAt);
         sb.append(", updatedAt=").append(updatedAt);
         sb.append(", shardIndex=").append(shardIndex);
         sb.append(", shardSize=").append(shardSize);
         sb.append(", shardTotal=").append(shardTotal);
-        sb.append(", key=").append(key);
-        sb.append("]");
+        sb.append(", key='").append(key).append('\'');
+        sb.append(", vod='").append(vod).append('\'');
+        sb.append('}');
         return sb.toString();
     }
 }
