@@ -9,6 +9,7 @@ import Course from "./views/admin/course.vue"
 import Content from "./views/admin/content.vue"
 import Category from "./views/admin/category.vue"
 import Teacher from "./views/admin/teacher.vue"
+import User from "./views/admin/user.vue"
 import File from "./components/file.vue"
 
 Vue.use(Router);
@@ -70,7 +71,11 @@ export default new Router({
                     path: "file/file",
                     name: "file/file",
                     component: File,
-                },
+                },{
+                    path: "system/user",
+                    name: "system/user",
+                    component: User,
+                }
             ]
         }
     ]
