@@ -15,6 +15,10 @@ public class SpringMvcConfig implements WebMvcConfigurer {
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         //我访问 http://127.0.0.1:9003/file/f/teacher/8nZoCcDs-avator2.jpg
         //形成的路径就是 Z:/course/file/src/main/resources/images/course/teacher/8nZoCcDs-avator2.jpg
+
+        //http://127.0.0.1:9000/file/f/teacher/sEb2BTHF.jpg
+        //我访问 http://127.0.0.1:9000/file/f/course/3xzByd6GCMOocGK0qIa0kI.jpg
+        //形成的路径就是 Z:/course/file/src/main/resources/images/course/teacher/8nZoCcDs-avator2.jpg
         registry.addResourceHandler("/f/**").addResourceLocations("file:" + FILE_PATH);
     }
 }

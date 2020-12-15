@@ -23,7 +23,7 @@ public class SectionController {
     public static final String BUSINESS_NAME = "小节";
 
     @Autowired
-SectionService sectionService;
+    SectionService sectionService;
 
     /**
      * 查询大章
