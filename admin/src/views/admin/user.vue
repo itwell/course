@@ -64,7 +64,7 @@
                                       <div class="form-group">
                                           <label class="col-sm-2 control-label">登陆名</label>
                                           <div class="col-sm-10">
-                                              <input v-model="user.loginName" class="form-control">
+                                              <input v-model="user.loginName" v-bind:disabled="user.id" class="form-control">
                                           </div>
                                       </div>
                                       <div class="form-group">
@@ -166,7 +166,7 @@
                             let resp = response.data;
                             if (resp.success) {
                                 $("#form-modal").modal("hide");
-                                Toast.success("保存成功");
+                                Toast.success("保存成功!");
                                 _this.list(1);
                             } else {
                                 Toast.warning(resp.message);
