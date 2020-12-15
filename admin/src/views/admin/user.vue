@@ -159,6 +159,9 @@
                     return;
                 }
 
+                //把前台输入的密码进行加密
+                _this.user.password = hex_md5(_this.user.password + KEY);
+
                 Loading.show();
                 _this.$ajax.post(process.env.VUE_APP_SERVER + '/system/admin/user/save', _this.user)
                         .then((response) => {

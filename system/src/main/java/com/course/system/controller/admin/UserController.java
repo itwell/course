@@ -9,6 +9,7 @@ import com.course.server.util.ValidatorUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -35,7 +36,7 @@ public class UserController {
     public ResponseDto test(@RequestBody PageDto pageDto) {
         logger.info("pageDto: {}",pageDto);
         ResponseDto responseDto = new ResponseDto();
-userService.list(pageDto);
+        userService.list(pageDto);
         responseDto.setContent(pageDto);
         return responseDto;
     }
@@ -47,12 +48,15 @@ userService.list(pageDto);
      */
     @PostMapping("/save")
     public ResponseDto save(@RequestBody UserDto userDto) {
+        String hexPwd = DigestUtils.md5DigestAsHex(userDto.getPassword().getBytes());
+        userDto.setPassword(hexPwd);
+
         logger.info("pageDto: {}",userDto);
 
-            ValidatorUtil.require(userDto.getLoginName(), "登陆名");
-            ValidatorUtil.length(userDto.getLoginName(), "登陆名", 1, 50);
-            ValidatorUtil.length(userDto.getName(), "昵称", 1, 50);
-            ValidatorUtil.require(userDto.getPassword(), "密码");
+        ValidatorUtil.require(userDto.getLoginName(), "登陆名");
+        ValidatorUtil.length(userDto.getLoginName(), "登陆名", 1, 50);
+        ValidatorUtil.length(userDto.getName(), "昵称", 1, 50);
+        ValidatorUtil.require(userDto.getPassword(), "密码");
 
         ResponseDto responseDto = new ResponseDto();
         userService.save(userDto);
