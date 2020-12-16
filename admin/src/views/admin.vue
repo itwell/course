@@ -293,7 +293,7 @@
                                      alt="Jason's Photo"/>
                                 <span class="user-info">
 									<small>Welcome,</small>
-									Jason
+									{{loginUser.name}}
 								</span>
 
                                 <i class="ace-icon fa fa-caret-down"></i>
@@ -369,7 +369,7 @@
                     <li class="" id="welcome-sidebar">
                         <router-link to="/welcome">
                             <i class="menu-icon fa fa-tachometer"></i>
-                            <span class="menu-text"> 欢迎 </span>
+                            <span class="menu-text"> 欢迎</span>
                         </router-link>
 
                         <b class="arrow"></b>
@@ -547,6 +547,11 @@
 <script>
     export default {
         name: "admin",
+        data: function() {
+            return {
+                loginUser: {},
+            }
+        },
         mounted: function () {
             let _this = this;
             $("body").removeClass("login-layout light-login");
@@ -556,6 +561,8 @@
             _this.activeSidebar(_this.$route.name.replace("/", "-") + "-sidebar");
 
             $.getScript('/ace/assets/js/ace.min.js');
+
+            _this.loginUser = Tool.getLoginUser();
         },
         watch: {
             $route: {

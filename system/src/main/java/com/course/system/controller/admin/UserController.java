@@ -101,7 +101,7 @@ public class UserController {
 
         ResponseDto responseDto = new ResponseDto();
         LoginUserDto loginUserDto = userService.login(userDto);
-        responseDto.setContent(userDto);
+        responseDto.setContent(loginUserDto);
         return responseDto;
     }
 }
