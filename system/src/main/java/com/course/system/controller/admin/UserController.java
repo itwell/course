@@ -73,7 +73,23 @@ public class UserController {
     public ResponseDto delete(@PathVariable String id) {
         logger.info("id: {}",id);
         ResponseDto responseDto = new ResponseDto();
-userService.delete(id);
+        userService.delete(id);
+        return responseDto;
+    }
+
+    /**
+     * 重置密码
+     * @param userDto
+     * @return
+     */
+    @PostMapping("/save-password")
+    public ResponseDto savePassword(@RequestBody UserDto userDto) {
+        String hexPwd = DigestUtils.md5DigestAsHex(userDto.getPassword().getBytes());
+        userDto.setPassword(hexPwd);
+
+        ResponseDto responseDto = new ResponseDto();
+        userService.savePassword(userDto);
+        responseDto.setContent(userDto);
         return responseDto;
     }
 }
