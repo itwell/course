@@ -2,6 +2,7 @@ package com.course.server.service;
 
 import com.course.server.domain.User;
 import com.course.server.domain.UserExample;
+import com.course.server.dto.LoginUserDto;
 import com.course.server.dto.PageDto;
 import com.course.server.dto.UserDto;
 import com.course.server.exception.BusinessException;
@@ -11,6 +12,8 @@ import com.course.server.util.CopyUtil;
 import com.course.server.util.UuidUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,6 +29,9 @@ import java.util.List;
  */
 @Service
 public class UserService {
+
+    private static final Logger logger = LoggerFactory.getLogger(UserService.class);
+
     @Autowired
     UserMapper userMapper;
 
@@ -111,10 +117,31 @@ public class UserService {
      * 重置密码
      * @param userDto
      */
-    public void savePassword(UserDto userDto){
+    public void savePassword(UserDto userDto) {
         User user = new User();
         user.setId(userDto.getId());
         user.setPassword(userDto.getPassword());
         userMapper.updateByPrimaryKeySelective(user);
+    }
+
+    /**
+     * 登录
+     * @param userDto
+     */
+    public LoginUserDto login(UserDto userDto) {
+        User user = selectByLoginName(userDto.getLoginName());
+        if (user == null) {
+            logger.info("用户名不存在, {}", userDto.getLoginName());
+            throw new BusinessException(BusinessExceptionCode.LOGIN_USER_ERROR);
+        } else {
+            if (user.getPassword().equals(userDto.getPassword())) {
+                // 登录成功
+                LoginUserDto loginUserDto = CopyUtil.copy(user, LoginUserDto.class);
+                return loginUserDto;
+            } else {
+                logger.info("密码不对, 输入密码：{}, 数据库密码：{}", userDto.getPassword(), user.getPassword());
+                throw new BusinessException(BusinessExceptionCode.LOGIN_USER_ERROR);
+            }
+        }
     }
 }
