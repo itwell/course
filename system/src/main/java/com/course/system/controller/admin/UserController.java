@@ -1,10 +1,7 @@
 package com.course.system.controller.admin;
 
 
-import com.course.server.dto.LoginUserDto;
-import com.course.server.dto.PageDto;
-import com.course.server.dto.ResponseDto;
-import com.course.server.dto.UserDto;
+import com.course.server.dto.*;
 import com.course.server.service.UserService;
 import com.course.server.util.ValidatorUtil;
 import org.slf4j.Logger;
@@ -12,6 +9,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * @author itwell
@@ -94,14 +93,33 @@ public class UserController {
         return responseDto;
     }
 
+    /**
+     * 登陆
+     * @param userDto
+     * @param request
+     * @return
+     */
     @PostMapping("/login")
-    public ResponseDto login(@RequestBody UserDto userDto) {
+    public ResponseDto login(@RequestBody UserDto userDto, HttpServletRequest request) {
         String hexPwd = DigestUtils.md5DigestAsHex(userDto.getPassword().getBytes());
         userDto.setPassword(hexPwd);
 
         ResponseDto responseDto = new ResponseDto();
         LoginUserDto loginUserDto = userService.login(userDto);
+        request.getSession().setAttribute(Constants.LOGIN_USER,loginUserDto);
         responseDto.setContent(loginUserDto);
+        return responseDto;
+    }
+
+    /**
+     * 退出登录
+     * @param request
+     * @return
+     */
+    @GetMapping("/logout")
+    public ResponseDto logout(HttpServletRequest request){
+        ResponseDto responseDto = new ResponseDto();
+        request.getSession().removeAttribute(Constants.LOGIN_USER);
         return responseDto;
     }
 }
