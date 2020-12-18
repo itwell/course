@@ -30,6 +30,10 @@ export default new Router({
         }, {
             path: "/",
             component: Admin,
+            /*登陆拦截*/
+            meta: {
+                loginRequire: true
+            },
             /*admin子页面*/
             children: [
                 {
