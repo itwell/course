@@ -41,6 +41,17 @@
 														</span>
                                                 </label>
 
+                                                <label class="block clearfix">
+                                                      <span class="block input-icon input-icon-right">
+                                                        <div class="input-group">
+                                                          <input v-model="user.imageCode" type="text" class="form-control" placeholder="验证码">
+                                                          <span class="input-group-addon" id="basic-addon2">
+                                                            <img v-on:click="loadImageCode()" id="image-code" alt="验证码"/>
+                                                          </span>
+                                                        </div>
+                                                      </span>
+                                                </label>
+
                                                 <div class="space"></div>
 
                                                 <div class="clearfix">
@@ -95,6 +106,9 @@
                 //如果能获取到缓存的值,说明上一次有勾选记住我
                 _this.user = rememberUser;
             }
+
+            // 初始时加载一次验证码图片
+            _this.loadImageCode();
         },
         methods:{
             login(){
@@ -109,6 +123,8 @@
                 if (md5 !== rememberUser.md5){
                     _this.user.password = hex_md5(_this.user.password + KEY);
                 }
+
+                _this.user.imageCodeToken = _this.imageCodeToken;
 
                 Loading.show();
                 _this.$ajax.post(process.env.VUE_APP_SERVER + '/system/admin/user/login', _this.user)
@@ -125,6 +141,7 @@
                                 // 如果勾选了记住我,则将用户名密码保存到本地缓存
                                 // 原来: 这里需要保存密码明文,否则登陆时优惠再加一次密
                                 // 现在: 这里保存密码秘闻,并保存密文md5,用于检测密码是否被重新输入过
+                                let md5 = hex_md5(_this.user.password);
                                 LocalStorage.set(LOCAL_KEY_REMEMBER_USER,{
                                     loginName: loginUser.loginName,
                                     // password: _this.user.passwordShow,
@@ -138,12 +155,26 @@
                             _this.$router.push("/welcome")
                         } else {
                             Toast.warning(resp.message);
+                            _this.user.password = "";
+                            _this.loadImageCode();
                         }
                     })
+            },
+
+            /**
+             * 加载图形验证码
+             */
+            loadImageCode: function () {
+                let _this = this;
+                _this.imageCodeToken = Tool.uuid(8);
+                $('#image-code').attr('src', process.env.VUE_APP_SERVER + '/system/admin/kaptcha/image-code/' + _this.imageCodeToken);
             },
         }
     }
 </script>
 
 <style>
+    .input-group-addon {
+        padding: 0;
+    }
 </style>

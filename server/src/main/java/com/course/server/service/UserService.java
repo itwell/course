@@ -135,6 +135,7 @@ public class UserService {
             throw new BusinessException(BusinessExceptionCode.LOGIN_USER_ERROR);
         } else {
             if (user.getPassword().equals(userDto.getPassword())) {
+                //如果数据库查出来的密码和前端传过来的密码相同则登陆成功
                 // 登录成功
                 LoginUserDto loginUserDto = CopyUtil.copy(user, LoginUserDto.class);
                 return loginUserDto;

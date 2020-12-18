@@ -1,6 +1,5 @@
 package com.course.server.util;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.aliyun.oss.OSSClient;
 import com.aliyuncs.DefaultAcsClient;
@@ -8,7 +7,6 @@ import com.aliyuncs.exceptions.ClientException;
 import com.aliyuncs.http.FormatType;
 import com.aliyuncs.profile.DefaultProfile;
 import com.aliyuncs.vod.model.v20170321.*;
-import org.apache.commons.codec.binary.Base64;
 
 import java.io.File;
 import java.io.InputStream;
@@ -156,7 +154,7 @@ public class VodUtil {
         return client.getAcsResponse(request);
     }
 
-    public static void main(String[] argv) {
+/*    public static void main(String[] argv) {
         //您的AccessKeyId
         String accessKeyId = "LTAI4G1VxQZutx4o5qzrfAd6";
         //您的AccessKeySecret
@@ -186,5 +184,5 @@ public class VodUtil {
         } catch (Exception e) {
             System.out.println("上传视频失败, ErrorMessage : " + e.getLocalizedMessage());
         }
-    }
+    }*/
 }
