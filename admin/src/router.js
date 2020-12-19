@@ -11,6 +11,7 @@ import Category from "./views/admin/category.vue"
 import Teacher from "./views/admin/teacher.vue"
 import User from "./views/admin/user.vue"
 import File from "./components/file.vue"
+import Resource from "./views/admin/resource.vue"
 
 Vue.use(Router);
 
@@ -79,6 +80,10 @@ export default new Router({
                     path: "system/user",
                     name: "system/user",
                     component: User,
+                }, {
+                    path: "system/resource",
+                    name: "system/resource",
+                    component: Resource,
                 }
             ]
         }
