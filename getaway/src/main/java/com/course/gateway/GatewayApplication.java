@@ -6,6 +6,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.core.env.Environment;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.reactive.CorsWebFilter;
@@ -14,6 +15,7 @@ import org.springframework.web.util.pattern.PathPatternParser;
 
 @SpringBootApplication
 @EnableEurekaClient
+@ComponentScan
 public class GatewayApplication {
 
     private static final Logger LOG = LoggerFactory.getLogger(GatewayApplication.class);
