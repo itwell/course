@@ -403,6 +403,15 @@
 
                                 <b class="arrow"></b>
                             </li>
+
+                            <li class="" id="system-role-sidebar">
+                                <router-link to="/system/role">
+                                    <i class="menu-icon fa fa-caret-right"></i>
+                                    角色管理
+                                </router-link>
+
+                                <b class="arrow"></b>
+                            </li>
                         </ul>
                     </li>
 
@@ -610,6 +619,14 @@
                             Toast.warning(resp.message);
                         }
                     })
+            },
+
+            /**
+             * 查找是否有权限
+             * @param id
+             */
+            hasResource(id) {
+                return Tool.hasResource(id);
             },
         }
     }

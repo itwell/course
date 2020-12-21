@@ -11,6 +11,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 /**
  * @author itwell
  * @date 2020-11-11 15:37
@@ -35,7 +37,7 @@ ResourceService resourceService;
     public ResponseDto test(@RequestBody PageDto pageDto) {
         logger.info("pageDto: {}",pageDto);
         ResponseDto responseDto = new ResponseDto();
-resourceService.list(pageDto);
+        resourceService.list(pageDto);
         responseDto.setContent(pageDto);
         return responseDto;
     }
@@ -65,7 +67,18 @@ resourceService.list(pageDto);
     public ResponseDto delete(@PathVariable String id) {
         logger.info("id: {}",id);
         ResponseDto responseDto = new ResponseDto();
-resourceService.delete(id);
+        resourceService.delete(id);
+        return responseDto;
+    }
+
+    /**
+     * 资源树查询
+     */
+    @GetMapping("/load-tree")
+    public ResponseDto loadTree() {
+        ResponseDto responseDto = new ResponseDto();
+        List<ResourceDto> resourceDtoList = resourceService.loadTree();
+        responseDto.setContent(resourceDtoList);
         return responseDto;
     }
 }

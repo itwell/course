@@ -431,27 +431,24 @@
                 })
             },
 
-            initTree(){
+            /**
+             * 初始资源树
+             */
+            initTree() {
                 let _this = this;
-                var setting = {
-                    check: {
-                        enable: true
-                    },
+                let setting = {
                     data: {
                         simpleData: {
-                            idkey: "id",
+                            idKey: "id",
                             pIdKey: "parent",
-                            rootPId: "00000000",
-                            enable: true
+                            rootPId: "",
+                            // enable: true
                         }
                     }
                 };
 
-                var zNodes = _this.categorys;
-
-                _this.tree = $.fn.zTree.init($("#tree"), setting, zNodes);
-                //展开所有节点
-                _this.tree.expandAll(true);
+                _this.zTree = $.fn.zTree.init($("#tree"), setting, _this.resources);
+                _this.zTree.expandAll(true);
             },
 
             /**
