@@ -29,8 +29,6 @@
 </template>
 
 <script>
-    import Pagination from "../../components/pagination";
-
     export default {
         name: "system-resource",
         data: function () {
@@ -45,6 +43,7 @@
             //激活侧边栏状态写法1
             // this.$parent.activeSidebar("system-resource-sidebar");
             let _this = this;
+            _this.list();
         },
         methods: {
 
@@ -54,11 +53,11 @@
             list() {
                 let _this = this;
                 Loading.show();
-                _this.$ajax.get(process.env.VUE_APP_SERVER + '/system/admin/resource/load-tree').then((response) => {
+                _this.$ajax.get(process.env.VUE_APP_SERVER + '/system/admin/resource/load-tree').then((res) => {
                         Loading.hide();
                         /*接口返回的data是ChapterDto*/
-                        let resp = response.data;
-                        _this.resources = resp.content;
+                        let response = res.data;
+                        _this.resources = response.content;
                         //初始化树
                         _this.initTree();
                     })
@@ -78,8 +77,7 @@
                 let json = JSON.parse(_this.resourceStr);
 
                 Loading.show();
-                _this.$ajax.post(process.env.VUE_APP_SERVER + '/system/admin/resource/save', json)
-                    .then((response) => {
+                _this.$ajax.post(process.env.VUE_APP_SERVER + '/system/admin/resource/save',json).then((response) => {
                         Loading.hide();
                         let resp = response.data;
                         if (resp.success) {
@@ -98,7 +96,7 @@
              */
             del(id) {
                 let _this = this;
-                Confirm.show("删除资源后不可恢复111，确认删除？", function () {
+                Confirm.show("删除资源后不可恢复，确认删除？", function () {
                     Loading.show();
                     _this.$ajax.delete(process.env.VUE_APP_SERVER + '/system/admin/resource/delete/' + id, _this.resource).then((response) => {
                         Loading.hide();
