@@ -70,10 +70,9 @@ public class ResourceService {
     }
 
     /**
-    * 新增
+    * 新增，ID是自定义好的，不是自动生成的
     */
     private void insert(Resource resource) {
-        resource.setId(UuidUtil.getShortUuid());
         resourceMapper.insert(resource);
     }
 
