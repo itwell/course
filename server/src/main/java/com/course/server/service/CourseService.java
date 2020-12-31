@@ -3,10 +3,7 @@ package com.course.server.service;
 import com.course.server.domain.Course;
 import com.course.server.domain.CourseContent;
 import com.course.server.domain.CourseExample;
-import com.course.server.dto.CourseContentDto;
-import com.course.server.dto.CourseDto;
-import com.course.server.dto.PageDto;
-import com.course.server.dto.SortDto;
+import com.course.server.dto.*;
 import com.course.server.enums.CourseStatusEnum;
 import com.course.server.mapper.CourseContentMapper;
 import com.course.server.mapper.CourseMapper;
@@ -15,6 +12,7 @@ import com.course.server.util.CopyUtil;
 import com.course.server.util.UuidUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.github.pagehelper.util.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -51,17 +49,19 @@ public class CourseService {
     /**
      * 列表查询
      */
-    public void list(PageDto pageDto) {
+    public void list(CoursePageDto pageDto) {
         //分页
         PageHelper.startPage(pageDto.getPage(),pageDto.getSize());
-
         CourseExample courseExample = new CourseExample();
-                courseExample.setOrderByClause("sort asc");
+        CourseExample.Criteria criteria = courseExample.createCriteria();
+        //是否为发布状态
+        if (!StringUtils.isEmpty(pageDto.getStatus())){
+            criteria.andStatusEqualTo(pageDto.getStatus());
+        }
+        courseExample.setOrderByClause("sort asc");
         List<Course> courseList = courseMapper.selectByExample(courseExample);
-
         PageInfo<Course> pageInfo = new PageInfo<>(courseList);
         pageDto.setTotal(pageInfo.getTotal());
-
         List<CourseDto> CourseDtoList = new ArrayList<CourseDto>();
                 for (int i = 0; i < courseList.size(); i++) {
                 Course course = courseList.get(i);
