@@ -2,9 +2,9 @@
   <header>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
       <div class="container">
-        <a class="navbar-brand" href="#">
+        <router-link class="navbar-brand" to="/">
           <i class="ace-icon fa fa-video-camera"></i>&nbsp;itwell
-        </a>
+        </router-link>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
@@ -12,7 +12,10 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
           <li class="nav-item active">
-            <a class="nav-link" href="#">主页 <span class="sr-only">(current)</span></a>
+            <router-link class="nav-link" to="/">主页 </router-link>
+          </li>
+          <li class="nav-item active">
+            <router-link class="nav-link" to="/list">全部课程</router-link>
           </li>
           <li class="nav-item active">
             <a class="nav-link" href="#">全部课程</a>
