@@ -1,9 +1,6 @@
 package com.course.business.controller.web;
 
-import com.course.server.dto.CourseDto;
-import com.course.server.dto.CoursePageDto;
-import com.course.server.dto.PageDto;
-import com.course.server.dto.ResponseDto;
+import com.course.server.dto.*;
 import com.course.server.enums.CourseStatusEnum;
 import com.course.server.service.CourseService;
 import org.slf4j.Logger;
@@ -46,6 +43,16 @@ public class CourseController {
         pageDto.setStatus(CourseStatusEnum.PUBLISH.getCode());
         courseService.list(pageDto);
         responseDto.setContent(pageDto);
+        return responseDto;
+    }
+
+    @GetMapping("/find/{id}")
+    public ResponseDto findCourse(@PathVariable String id){
+        logger.info("查找课程开始:{}",id);
+        ResponseDto responseDto = new ResponseDto();
+        CourseDto courseDto = courseService.findCourse(id);
+        responseDto.setContent(courseDto);
+        logger.info("查找课程结束:{}",responseDto);
         return responseDto;
     }
 }
