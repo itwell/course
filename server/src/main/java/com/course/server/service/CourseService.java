@@ -47,29 +47,15 @@ public class CourseService {
     private CourseContentMapper courseContentMapper;
 
     /**
-     * 列表查询
+     * 列表查询：关联课程分类表
+     * @param pageDto
      */
     public void list(CoursePageDto pageDto) {
-        //分页
-        PageHelper.startPage(pageDto.getPage(),pageDto.getSize());
-        CourseExample courseExample = new CourseExample();
-        CourseExample.Criteria criteria = courseExample.createCriteria();
-        //是否为发布状态
-        if (!StringUtils.isEmpty(pageDto.getStatus())){
-            criteria.andStatusEqualTo(pageDto.getStatus());
-        }
-        courseExample.setOrderByClause("sort asc");
-        List<Course> courseList = courseMapper.selectByExample(courseExample);
-        PageInfo<Course> pageInfo = new PageInfo<>(courseList);
+        PageHelper.startPage(pageDto.getPage(), pageDto.getSize());
+        List<CourseDto> courseDtoList = myCourseMapper.list(pageDto);
+        PageInfo<CourseDto> pageInfo = new PageInfo<>(courseDtoList);
         pageDto.setTotal(pageInfo.getTotal());
-        List<CourseDto> CourseDtoList = new ArrayList<CourseDto>();
-                for (int i = 0; i < courseList.size(); i++) {
-                Course course = courseList.get(i);
-                CourseDto courseDto = new CourseDto();
-                BeanUtils.copyProperties(course,courseDto);
-                CourseDtoList.add(courseDto);
-                }
-                pageDto.setList(CourseDtoList);
+        pageDto.setList(courseDtoList);
     }
 
     /**
