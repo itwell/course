@@ -51,7 +51,7 @@ ResourceService resourceService;
     public ResponseDto save(@RequestBody String jsonStr) {
         logger.info("pageDto: {}",jsonStr);
 
-            ValidatorUtil.require(jsonStr, "资源");
+        ValidatorUtil.require(jsonStr, "资源");
 
         ResponseDto responseDto = new ResponseDto();
         resourceService.saveJson(jsonStr);

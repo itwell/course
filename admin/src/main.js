@@ -49,7 +49,7 @@ router.beforeEach((to, from, next) => {
     })) {
         let loginUser = Tool.getLoginUser();
         if (Tool.isEmpty(loginUser)) {
-            next('/login');
+            next();
         } else {
             next();
         }
