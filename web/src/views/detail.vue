@@ -161,7 +161,15 @@
            */
           play(section) {
               let _this = this;
-              _this.$refs.modalPlayer.playVod(section.vod);
+              if (section.charge === _this.SECTION_CHARGE.CHARGE.key ) {
+                  let loginMember = Tool.getLoginMember();
+                  if (Tool.isEmpty(loginMember)) {
+                      Toast.warning("请先登录");
+                      return;
+                  } else {
+                      _this.$refs.modalPlayer.playVod(section.vod);
+                  }
+              }
           },
       }
   }
