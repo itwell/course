@@ -18,7 +18,10 @@
                             <span class="price-now text-danger"><i class="fa fa-yen"></i>&nbsp;{{course.price}}&nbsp;&nbsp;</span>
                         </p>
                         <p class="course-head-button-links">
-                            <a class="btn btn-lg btn-primary btn-shadow" href="javascript:;">立即报名</a>
+                            <a v-show="!memberCourse.id" v-on:click="enroll()" class="btn btn-lg btn-primary btn-shadow"
+                               href="javascript:;">立即报名</a>
+                            <a v-show="memberCourse.id" href="#"
+                               class="btn btn-lg btn-success btn-shadow disabled">您已报名</a>
                         </p>
                     </div>
                 </div>
@@ -60,7 +63,8 @@
                                                         <i class="fa fa-video-camera d-none d-sm-inline"></i>&nbsp;&nbsp;
                                                         <span class="d-none d-sm-inline">第{{j+1}}节&nbsp;&nbsp;</span>
                                                         {{s.title}}
-                                                        <span v-show="s.charge !== SECTION_CHARGE.CHARGE.key" class="badge badge-primary hidden-xs">免费</span>
+                                                        <span v-show="s.charge !== SECTION_CHARGE.CHARGE.key"
+                                                              class="badge badge-primary hidden-xs">免费</span>
                                                     </div>
                                                 </td>
                                                 <td class="col-sm-1 text-right">
@@ -96,101 +100,164 @@
 </template>
 
 <script>
-  import ModalPlayer from "../components/modal-player";
+    import ModalPlayer from "../components/modal-player";
 
-  export default {
-      name: 'detail',
-      components: {ModalPlayer},
-      data: function () {
-          return{
-              id: "",
-              course: {},
-              teacher: {},
-              chapters: [],
-              sections: [],
-              memberCourse: {},
-              COURSE_LEVEL: COURSE_LEVEL,
-              SECTION_CHARGE: SECTION_CHARGE
-          }
-      },
-      mounted(){
-          let _this = this;
-          _this.id = _this.$route.query.id;
-          _this.findCourse();
-      },
-      methods: {
-          findCourse() {
-              let _this = this;
-              _this.$ajax.get(process.env.VUE_APP_SERVER + '/business/web/course/find/' + _this.id).then((response)=>{
-                  let resp = response.data;
-                  _this.course = resp.content;
-                  _this.teacher = _this.course.teacher || {};
-                  _this.chapters = _this.course.chapters || [];
-                  _this.sections = _this.course.sections || [];
+    export default {
+        name: 'detail',
+        components: {ModalPlayer},
+        data: function () {
+            return {
+                id: "",
+                course: {},
+                teacher: {},
+                chapters: [],
+                sections: [],
+                memberCourse: {},
+                COURSE_LEVEL: COURSE_LEVEL,
+                SECTION_CHARGE: SECTION_CHARGE
+            }
+        },
+        mounted() {
+            let _this = this;
+            _this.id = _this.$route.query.id;
+            _this.findCourse();
+        },
+        methods: {
+            findCourse() {
+                let _this = this;
+                _this.$ajax.get(process.env.VUE_APP_SERVER + '/business/web/course/find/' + _this.id).then((response) => {
+                    let resp = response.data;
+                    _this.course = resp.content;
+                    _this.teacher = _this.course.teacher || {};
+                    _this.chapters = _this.course.chapters || [];
+                    _this.sections = _this.course.sections || [];
 
-                  // 将所有的节放入对应的章中
-                  for (let i = 0; i < _this.chapters.length; i++) {
-                      let c = _this.chapters[i];
-                      c.sections = [];
-                      for (let j = 0; j < _this.sections.length; j++) {
-                          let s = _this.sections[j];
-                          if (c.id === s.chapterId) {
-                              c.sections.push(s);
-                          }
-                      }
+                    // 获取报名信息
+                    _this.getEnroll();
 
-                      Tool.sortAsc(c.sections, "sort");
-                  }
-              })
-          },
+                    // 将所有的节放入对应的章中
+                    for (let i = 0; i < _this.chapters.length; i++) {
+                        let c = _this.chapters[i];
+                        c.sections = [];
+                        for (let j = 0; j < _this.sections.length; j++) {
+                            let s = _this.sections[j];
+                            if (c.id === s.chapterId) {
+                                c.sections.push(s);
+                            }
+                        }
 
-          /**
-           * 展开/收缩一个章节
-           * @param chapter
-           */
-          doFolded (chapter, i) {
-              let _this = this;
-              chapter.folded = !chapter.folded;
-              // 在v-for里写v-show，只修改属性不起作用，需要$set
-              _this.$set(_this.chapters, i, chapter);
-          },
+                        Tool.sortAsc(c.sections, "sort");
+                    }
+                })
+            },
 
-          /**
-           * 播放视频
-           * @param section
-           */
-          play(section) {
-              let _this = this;
-              if (section.charge === _this.SECTION_CHARGE.CHARGE.key ) {
-                      Toast.warning("请先登录");
-                  } else {
-                      _this.$refs.modalPlayer.playVod(section.vod);
-                  }
-              }
-          },
-  }
+            /**
+             * 展开/收缩一个章节
+             * @param chapter
+             */
+            doFolded(chapter, i) {
+                let _this = this;
+                chapter.folded = !chapter.folded;
+                // 在v-for里写v-show，只修改属性不起作用，需要$set
+                _this.$set(_this.chapters, i, chapter);
+            },
+
+            /**
+             * 播放视频
+             * @param section
+             */
+            play(section) {
+                let _this = this;
+                if (section.charge === _this.SECTION_CHARGE.CHARGE.key ) {
+                    let loginMember = Tool.getLoginMember();
+                    if (Tool.isEmpty(loginMember)) {
+                        Toast.warning("请先登录");
+                        return;
+                    } else {
+                        if (Tool.isEmpty(_this.memberCourse)) {
+                            Toast.warning("请先报名");
+                            return;
+                        }
+                    }
+                }
+                _this.$refs.modalPlayer.playVod(section.vod);
+            },
+
+
+            /**
+             * 报名
+             */
+            enroll() {
+                let _this = this;
+                let loginMember = Tool.getLoginMember();
+                if (Tool.isEmpty(loginMember)) {
+                    Toast.warning("请先登录");
+                    return;
+                }
+                _this.$ajax.post(process.env.VUE_APP_SERVER + '/business/web/member-course/enroll', {
+                    courseId: _this.course.id,
+                    memberId: loginMember.id
+                }).then((response)=>{
+                    let resp = response.data;
+                    if (resp.success) {
+                        _this.memberCourse = resp.content;
+                        Toast.success("报名成功！");
+                    } else {
+                        Toast.warning(resp.message);
+                    }
+                });
+            },
+
+            /**
+             * 获取报名
+             */
+            getEnroll() {
+                let _this = this;
+                let loginMember = Tool.getLoginMember();
+                if (Tool.isEmpty(loginMember)) {
+                    console.log("未登录");
+                    return;
+                }
+                _this.$ajax.post(process.env.VUE_APP_SERVER + '/business/web/member-course/get-enroll', {
+                    courseId: _this.course.id,
+                    memberId: loginMember.id
+                }).then((response)=>{
+                    let resp = response.data;
+                    if (resp.success) {
+                        _this.memberCourse = resp.content || {};
+                    }
+                });
+            },
+        }
+    }
 </script>
 
 <style>
     /* 课程信息 */
     .course-head {
     }
+
     .course-head h1 {
         font-size: 2rem;
         margin-bottom: 1.5rem;
     }
+
     .course-head-item span {
         margin-right: 1rem;
     }
+
     .course-head-desc {
         font-size: 1rem;
         color: #555
     }
+
     .course-head a {
     }
+
     .course-head-price {
         font-size: 2rem;
     }
+
     @media (max-width: 700px) {
         .course-head h1 {
             font-size: 1.5rem;
@@ -201,6 +268,7 @@
     .chapter {
         padding-bottom: 1.25rem;
     }
+
     .chapter-chapter {
         font-size: 1.25rem;
         padding: 1.25rem;
@@ -208,30 +276,37 @@
         color: white;
         cursor: pointer;
     }
+
     .chapter-section-tr {
         font-size: 1rem;
     }
-    .chapter-section-tr td{
+
+    .chapter-section-tr td {
         padding: 1rem 1.25rem;
         vertical-align: middle;
     }
+
     /*鼠标手势*/
-    .chapter-section-tr td .section-title{
+    .chapter-section-tr td .section-title {
         color: #555;
     }
-    .chapter-section-tr td .section-title:hover{
+
+    .chapter-section-tr td .section-title:hover {
         color: #23527c;
         font-weight: bolder;
         cursor: pointer;
     }
+
     /*行头小图标*/
-    .chapter-section-tr td .section-title i{
+    .chapter-section-tr td .section-title i {
         color: #2a6496;
     }
+
     @media (max-width: 700px) {
         .chapter-chapter {
             font-size: 1.2rem;
         }
+
         .chapter-section-tr {
             font-size: 0.9rem;
         }

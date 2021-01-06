@@ -223,6 +223,38 @@ create table `resource` (
   primary key (`id`)
 ) engine=innodb default charset=utf8mb4 comment='资源';
 
+INSERT INTO `resource` VALUES ('00', '欢迎', 'welcome', NULL, '');
+INSERT INTO `resource` VALUES ('01', '系统管理', NULL, NULL, '');
+INSERT INTO `resource` VALUES ('0101', '用户管理', 'system/user', NULL, '01');
+INSERT INTO `resource` VALUES ('010101', '保存', NULL, '[\"/system/admin/user/list\",\"/system/admin/user/save\"]', '0101');
+INSERT INTO `resource` VALUES ('010102', '删除', NULL, '[\"/system/admin/user/delete\"]', '0101');
+INSERT INTO `resource` VALUES ('010103', '重置密码', NULL, '[\"/system/admin/user/save-password\"]', '0101');
+INSERT INTO `resource` VALUES ('0102', '资源管理', 'system/resource', NULL, '01');
+INSERT INTO `resource` VALUES ('010201', '保存/显示', NULL, '[\"/system/admin/resource\"]', '0102');
+INSERT INTO `resource` VALUES ('0103', '角色管理', 'system/role', NULL, '01');
+INSERT INTO `resource` VALUES ('010301', '角色/权限管理', NULL, '[\"/system/admin/role\"]', '0103');
+INSERT INTO `resource` VALUES ('02', '业务管理', NULL, NULL, '');
+INSERT INTO `resource` VALUES ('0201', '分类管理', 'business/category', NULL, '02');
+INSERT INTO `resource` VALUES ('020101', '增删改查', NULL, '[\"/business/admin/category\"]', '0201');
+INSERT INTO `resource` VALUES ('0202', '课程管理', 'business/course', NULL, '02');
+INSERT INTO `resource` VALUES ('020201', '增删改查', NULL, '[\"/business/admin/course\",\"/business/admin/category/all\",\"business/chapter\",\"business/content\",\"/business/admin/course/list\",\"/business/admin/course/delete/\",\"/business/admin/course/save\",\"/business/admin/course/list-category/\",\"/business/admin/course/sort\",\"/business/admin/count/count-all\"]', '0202');
+INSERT INTO `resource` VALUES ('0203', '大章管理', 'business/chapter', NULL, '02');
+INSERT INTO `resource` VALUES ('020301', '增删改查', NULL, '[\"/business/admin/chapter/delete/\",\"/business/admin/chapter/list\",\"/business/admin/chapter/save\"]', '0203');
+INSERT INTO `resource` VALUES ('0204', '小节管理', 'business/section', NULL, '02');
+INSERT INTO `resource` VALUES ('020401', '增删改查', NULL, '[\"/business/admin/section/save\",\"/business/admin/section/list\",\"/business/admin/section/delete/\"]', '0204');
+INSERT INTO `resource` VALUES ('0205', '内容管理', 'business/content', NULL, '02');
+INSERT INTO `resource` VALUES ('020501', '增删改查', NULL, '[\"/business/admin/course/find-content/\",\"/business/admin/course/save-content\",\"/business/admin/course-content-file/list/\",\"/business/admin/course-content-file/save\",\"/business/admin/course-content-file/delete/\"]', '0205');
+INSERT INTO `resource` VALUES ('0206', '讲师管理', 'business/teacher', NULL, '02');
+INSERT INTO `resource` VALUES ('020601', '增删改查', NULL, '[\"/business/admin/teacher\",\"/business/admin/teacher/all\"]', '0206');
+INSERT INTO `resource` VALUES ('0207', '会员管理', 'business/member', NULL, '02');
+INSERT INTO `resource` VALUES ('020701', '增删改查', NULL, '[\"/business/admin/member\"]', '0207');
+INSERT INTO `resource` VALUES ('0208', '短信管理', 'business/sms', NULL, '02');
+INSERT INTO `resource` VALUES ('020801', '增删改查', NULL, '[\"/business/admin/sms\"]', '0208');
+INSERT INTO `resource` VALUES ('0209', '订单管理', 'business/order', NULL, '02');
+INSERT INTO `resource` VALUES ('020901', '增删改查', NULL, '[\"/business/admin/order\",\"/business/admin/order/list\"]', '0209');
+INSERT INTO `resource` VALUES ('03', '文件管理', NULL, NULL, '');
+INSERT INTO `resource` VALUES ('0301', '文件管理', 'file/file', NULL, '03');
+INSERT INTO `resource` VALUES ('030101', '文件管理', NULL, '[\"/file/admin/file\",\"/file/admin/check\",\"/file/admin/oss-append\",\"/file/admin/oss-simple\",\"/file/admin/get-auth\",\"/file/admin/vod\"]', '0301');
 
 drop table if exists `role_user`;
 create table `role_user` (
@@ -244,3 +276,15 @@ create table `sms` (
   `status` char(1) not null comment '用途|枚举[SmsStatusEnum]：USED("U", "已使用"), NOT_USED("N", "未使用")',
   primary key (`id`)
 ) engine=innodb default charset=utf8mb4 comment='短信验证码';
+
+
+# 会员课程报名
+drop table if exists `member_course`;
+create table `member_course` (
+  `id` char(8) not null default '' comment 'id',
+  `member_id` char(8) not null comment '会员id',
+  `course_id` char(8) not null comment '课程id',
+  `at` datetime(3) not null comment '报名时间',
+  primary key (`id`),
+  unique key `member_course_unique` (`member_id`, `course_id`)
+) engine=innodb default charset=utf8mb4 comment='会员课程报名';
