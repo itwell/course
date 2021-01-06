@@ -104,7 +104,7 @@
                                                   v-bind:suffixs="['mp4']"
                                                   v-bind:use="FILE_USE.COURSE.key"
                                                   v-bind:after-upload="afterUpload"></vod>
-                                            <div v-show="section.video" class="row">
+                                            <div class="row" v-show="section.video">
                                                 <div class="col-md-9">
                                                     <player ref="player" v-bind:player-id="'form-player-div'"></player>
                                                     <video v-bind:src="section.video" id="video" controls="controls" class="hidden"></video>
@@ -300,10 +300,11 @@
                 console.log("************************");
                 console.log("video" + video);
                 console.log("************************");
-                _this.section.vod = vod;
+                _this.section.video = video;
                 console.log("************************");
                 console.log("vod" + vod);
                 console.log("************************");
+                _this.section.vod = vod;
                 _this.getTime();
                 _this.$refs.player.playUrl(video);
             },
@@ -318,6 +319,8 @@
                     console.log(ele);
                     //把时长换算成10进制的整数
                     _this.section.time = parseInt(ele.duration,10);
+                    console.log(_this.section.time);
+                    console.log(_this.section.video);
                 },1000);
             },
 

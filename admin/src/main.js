@@ -41,7 +41,6 @@ Object.keys(filter).forEach(key => {
 });
 
 // 路由登录拦截
-// from跳转之前 跳转之后
 router.beforeEach((to, from, next) => {
     // 要不要对meta.loginRequire属性做监控拦截
     if (to.matched.some(function (item) {
@@ -49,7 +48,7 @@ router.beforeEach((to, from, next) => {
     })) {
         let loginUser = Tool.getLoginUser();
         if (Tool.isEmpty(loginUser)) {
-            next();
+            next('/login');
         } else {
             next();
         }

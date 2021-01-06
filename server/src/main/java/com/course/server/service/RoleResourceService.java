@@ -66,7 +66,7 @@ public class RoleResourceService {
     * 新增
     */
     private void insert(RoleResource roleResource) {
-        roleResource.setId(UuidUtil.getShortUuid());
+        roleResource.setId(null);
         roleResourceMapper.insert(roleResource);
     }
 

@@ -17,65 +17,66 @@
       }
     },
     methods: {
-      playUrl(url) {
-        let _this = this;
-        console.log("开始播放:", url);
+        playUrl(url) {
+            let _this = this;
+            console.log("开始播放:", url);
 
-        //如果已经有播放器了，则将播放器div删除
-        if (_this.aliPlayer) {
-          _this.aliPlayer = null;
-          $("#" + _this.playerId + '-player').remove();
-        }
-
-        // 初始化播放器
-        $("#" + _this.playerId).append("<div class=\"prism-player\" id=\"" + _this.playerId + "-player\"></div>");
-        _this.aliPlayer = new Aliplayer({
-          id: _this.playerId + '-player',
-          width: '100%',
-          autoplay: false,
-          source: url,
-          cover: 'http://liveroom-img.oss-cn-qingdao.aliyuncs.com/logo.png',
-        }, function (player) {
-          console.log('播放器创建好了。')
-        });
-      },
-
-      playVod (vod) {
-        let _this = this;
-        Loading.show();
-        //获取播放凭证
-        _this.$ajax.get(process.env.VUE_APP_SERVER + '/file/admin/get-auth/' + vod).then((response)=>{
-          Loading.hide();
-          let resp = response.data;
-          if (resp.success) {
             //如果已经有播放器了，则将播放器div删除
             if (_this.aliPlayer) {
-              _this.aliPlayer = null;
-              $("#" + _this.playerId + '-player').remove();
+                _this.aliPlayer = null;
+                $("#" + _this.playerId + '-player').remove();
             }
 
             // 初始化播放器
             $("#" + _this.playerId).append("<div class=\"prism-player\" id=\"" + _this.playerId + "-player\"></div>");
+            console.log("=======================");
+            console.log("=======================");
+            console.log(_this.playerId);
+            console.log($("#" + _this.playerId));
+            console.log("=======================");
+            console.log("=======================");
             _this.aliPlayer = new Aliplayer({
-              id: _this.playerId + '-player',
-              width: '100%',
-              //初始化完毕视频是否自动播放
-              autoplay: false,
-              vid: vod,
-              //放入播放凭证
-              playauth: resp.content,
-              //如果不播放视频的时候显示的封面
-              cover: 'http://liveroom-img.oss-cn-qingdao.aliyuncs.com/logo.png',
-              encryptType:1, //当播放私有加密流时需要设置。
-            },function(player){
-              console.log('播放器创建好了。')
+                id: _this.playerId + '-player',
+                width: '100%',
+                autoplay: false,
+                source: url,
+                cover: 'http://liveroom-img.oss-cn-qingdao.aliyuncs.com/logo.png',
+            }, function (player) {
+                console.log('播放器创建好了。')
             });
-          } else {
-            Toast.warning('播放错误。')
-          }
-        })
+        },
 
-      }
+        playVod (vod) {
+            let _this = this;
+            _this.$ajax.get(process.env.VUE_APP_SERVER + '/file/web/get-auth/' + vod).then((response)=>{
+                let resp = response.data;
+                if (resp.success) {
+                    //如果已经有播放器了，则将播放器div删除
+                    if (_this.aliPlayer) {
+                        _this.aliPlayer = null;
+                        $("#" + _this.playerId + '-player').remove();
+                    }
+
+                    // 初始化播放器
+                    $("#" + _this.playerId).append("<div class=\"prism-player\" id=\"" + _this.playerId + "-player\"></div>");
+                    _this.aliPlayer = new Aliplayer({
+                        id: _this.playerId + '-player',
+                        width: '100%',
+                        autoplay: false,
+                        vid: vod,
+                        playauth: resp.content,
+                        // cover: 'http://liveroom-img.oss-cn-qingdao.aliyuncs.com/logo.png',
+                        cover: 'http://liveroom-img.oss-cn-qingdao.aliyuncs.com/logo.png',
+                        encryptType:1, //当播放私有加密流时需要设置。
+                    },function(player){
+                        console.log('播放器创建好了。')
+                    });
+                } else {
+                    Toast.warning('播放错误。')
+                }
+            })
+
+        }
     }
   }
 </script>
