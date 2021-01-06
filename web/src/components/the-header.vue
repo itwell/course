@@ -30,8 +30,7 @@
           </li>
         </ul>
           <span class="text-white pr-3">您好：</span>
-          <button class="btn btn-outline-light my-2 my-sm-0">退出登录</button>
-          <button class="btn btn-outline-light my-2 my-sm-0">登录/注册</button>
+          <button v-on:click="openLoginModal()" class="btn btn-outline-light my-2 my-sm-0">登录/注册</button>
         <!--搜索框-->
         <!--<form class="form-inline my-2 my-lg-0">
           <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
@@ -40,11 +39,25 @@
       </div>
       </div>
     </nav>
+
+    <the-login ref="loginComponent"></the-login>
   </header>
 </template>
 
 <script>
+  import TheLogin from "./login";
   export default {
       name: 'theHeader',
+      components: {TheLogin},
+      methods: {
+          /**
+           * 打开登录注册窗口
+           */
+          openLoginModal() {
+              let _this = this;
+              _this.$refs.loginComponent.openLoginModal();
+          },
+      }
   }
+
 </script>

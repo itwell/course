@@ -12,9 +12,10 @@ module.exports = {
         'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
         'no-undef': 'off',
         'vue/no-unused-vars': 'off',
-        'vue/require-v-for-key': 'off',
+        /*没有用到的变量不报错*/
         'no-unused-vars': 'off',
-        'vue/no-unused-components': 'off'
+        'vue/no-unused-compoents' : 'off',
+        'vue/require-v-for-key': 'off',
     },
     parserOptions: {
         parser: 'babel-eslint'
