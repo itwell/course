@@ -1,10 +1,10 @@
 <template>
     <div class="page-content">
         <p>
-            <button v-on:click="add()" v-bind:list="list" class="btn btn-white btn-default btn-round">
+            <!--<button v-on:click="add()" v-bind:list="list" class="btn btn-white btn-default btn-round">
                 <i class="ace-icon fa fa-edit blue"></i>
                 新增
-            </button>
+            </button>-->
             &nbsp;
             <button v-on:click="list(1)" v-bind:list="list" class="btn btn-white btn-default btn-round">
                 <i class="ace-icon fa fa-refresh green"></i>
@@ -21,7 +21,7 @@
                     <th>昵称</th>
                     <th>头像url</th>
                     <th>注册时间</th>
-                <th>操作</th>
+                    <!--<th>操作</th>-->
             </tr>
             </thead>
 
@@ -37,13 +37,13 @@
                     <td>
                         <div class="hidden-sm hidden-xs btn-group">
                             <!--把循环中的每一个edit传入模态框上-->
-                            <button v-on:click="edit(member)" class="btn btn-xs btn-info">
+                            <!--<button v-on:click="edit(member)" class="btn btn-xs btn-info">
                                 <i class="ace-icon fa fa-pencil bigger-120"></i>
                             </button>
 
                             <button v-on:click="del(member.id)" class="btn btn-xs btn-danger">
                                 <i class="ace-icon fa fa-trash-o bigger-120"></i>
-                            </button>
+                            </button>-->
 
                         </div>
 
@@ -54,7 +54,7 @@
         </table>
 
         <!--模态框-->
-        <div id="form-modal" class="modal fade" tabindex="-1" role="dialog">
+        <!--<div id="form-modal" class="modal fade" tabindex="-1" role="dialog">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -63,7 +63,7 @@
                         <h4 class="modal-title">表单</h4>
                     </div>
                     <div class="modal-body">
-                        <!--水平表单-->
+                        &lt;!&ndash;水平表单&ndash;&gt;
                         <form class="form-horizontal">
                                       <div class="form-group">
                                           <label class="col-sm-2 control-label">手机号</label>
@@ -101,9 +101,9 @@
                         <button v-on:click="save()" type="button" class="btn btn-primary">保存</button>
                         <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
                     </div>
-                </div><!-- /.modal-content -->
-            </div><!-- /.modal-dialog -->
-        </div><!-- /.modal -->
+                </div>&lt;!&ndash; /.modal-content &ndash;&gt;
+            </div>&lt;!&ndash; /.modal-dialog &ndash;&gt;
+        </div>--><!-- /.modal -->
 
         <pagination ref="pagination" v-bind:list="list" v-bind:itemCount="8"></pagination>
     </div><!-- /.span -->
@@ -132,12 +132,12 @@
             /**
              * 新增
              */
-            add() {
+            /*add() {
                 let _this = this;
-                /*新增的时候表单不用数据*/
+                /!*新增的时候表单不用数据*!/
                 _this.member = {};
                 $("#form-modal").modal("show");
-            },
+            },*/
 
             /**
              * 查询
@@ -162,10 +162,10 @@
             /**
              * 保存
              */
-            save() {
+            /*save() {
                 let _this = this;
 
-                /*校验表单值是否合法*/
+                /!*校验表单值是否合法*!/
                 if (1 != 1
                       || !Validator.require(_this.member.mobile, "手机号")
                       || !Validator.length(_this.member.mobile, "手机号", 1, 11)
@@ -189,25 +189,25 @@
                                 Toast.warning(resp.message);
                             }
                         })
-            },
+            },*/
 
             /**
              * 回显数据
              */
-            edit(member) {
+            /*edit(member) {
                 let _this = this;
-                /*_this.chapter = chapter; 这种写法有双向数据绑定的问题*/
+                /!*_this.chapter = chapter; 这种写法有双向数据绑定的问题*!/
                 _this.member = $.extend({}, member);
 
                 $("#form-modal").modal("show");
             }
-            ,
+            ,*/
 
             /**
              * 删除数据
              * @param id
              */
-            del(id) {
+            /*del(id) {
                 let _this = this;
                 Confirm.show("删除会员后不可恢复111，确认删除？", function () {
                     Loading.show();
@@ -221,7 +221,7 @@
                     });
                 })
             }
-            ,
+            ,*/
         }
     }
 </script>
