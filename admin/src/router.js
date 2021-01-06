@@ -93,10 +93,9 @@ export default new Router({
                     component: Resource,
                 }, {
                     path: "system/role",
-                    name: "system/role ",
+                    name: "system/role",
                     component: Role,
-                }
-            ]
+                }]
         }
     ]
 })

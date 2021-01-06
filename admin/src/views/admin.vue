@@ -385,8 +385,8 @@
 
                         <b class="arrow"></b>
 
-                        <ul v-show="hasResource('0101')" class="submenu">
-                            <li class="" id="system-user-sidebar">
+                        <ul class="submenu">
+                            <li v-show="hasResource('0101')" class="" id="system-user-sidebar">
                                 <router-link to="/system/user">
                                     <i class="menu-icon fa fa-caret-right"></i>
                                     用户管理
