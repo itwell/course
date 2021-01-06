@@ -114,7 +114,7 @@
 
     export default {
         components: {Pagination},
-        name: "system-member",
+        name: "business-member",
         data: function () {
             return {
                 member:{},
@@ -123,7 +123,7 @@
         },
         mounted: function () {
             //激活侧边栏状态写法1
-            // this.$parent.activeSidebar("system-member-sidebar");
+            // this.$parent.activeSidebar("business-member-sidebar");
             let _this = this;
             _this.$refs.pagination.size = 5;
             _this.list(1);
@@ -145,7 +145,7 @@
             list(page) {
                 let _this = this;
                 Loading.show();
-                _this.$ajax.post(process.env.VUE_APP_SERVER + '/system/admin/member/list', {
+                _this.$ajax.post(process.env.VUE_APP_SERVER + '/business/admin/member/list', {
                     page: page,
                     /*根据pagination名字获取组件*/
                     size: _this.$refs.pagination.size,
@@ -177,7 +177,7 @@
                 }
 
                 Loading.show();
-                _this.$ajax.post(process.env.VUE_APP_SERVER + '/system/admin/member/save', _this.member)
+                _this.$ajax.post(process.env.VUE_APP_SERVER + '/business/admin/member/save', _this.member)
                         .then((response) => {
                             Loading.hide();
                             let resp = response.data;
@@ -211,7 +211,7 @@
                 let _this = this;
                 Confirm.show("删除会员后不可恢复111，确认删除？", function () {
                     Loading.show();
-                    _this.$ajax.delete(process.env.VUE_APP_SERVER + '/system/admin/member/delete/' + id, _this.member).then((response) => {
+                    _this.$ajax.delete(process.env.VUE_APP_SERVER + '/business/admin/member/delete/' + id, _this.member).then((response) => {
                         Loading.hide();
                         let resp = response.data;
                         if (resp.success) {

@@ -14,6 +14,7 @@ import File from "./components/file.vue"
 import Resource from "./views/admin/resource.vue"
 import Role from "./views/admin/role.vue"
 import Member from "./views/admin/member.vue"
+import Sms from "./views/admin/sms.vue"
 
 Vue.use(Router);
 
@@ -78,6 +79,11 @@ export default new Router({
                     path: "business/member",
                     name: "business/member",
                     component: Member,
+                },
+                {
+                    path: "business/sms",
+                    name: "business/sms",
+                    component: Sms,
                 },
                 {
                     path: "file/file",
