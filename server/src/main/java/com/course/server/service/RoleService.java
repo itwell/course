@@ -121,7 +121,7 @@ public class RoleService {
         // 保存角色资源
         for (int i = 0; i < resourceIds.size(); i++) {
             RoleResource roleResource = new RoleResource();
-            roleResource.setId(UuidUtil.getShortUuid());
+            roleResource.setId(null);
             roleResource.setRoleId(roleId);
             roleResource.setResourceId(resourceIds.get(i));
             roleResourceMapper.insert(roleResource);

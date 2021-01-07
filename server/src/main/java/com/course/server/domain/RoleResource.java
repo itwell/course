@@ -1,17 +1,17 @@
 package com.course.server.domain;
 
 public class RoleResource {
-    private String id;
+    private Integer id;
 
     private String roleId;
 
     private String resourceId;
 
-    public String getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -33,14 +33,11 @@ public class RoleResource {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(getClass().getSimpleName());
-        sb.append(" [");
-        sb.append("Hash = ").append(hashCode());
-        sb.append(", id=").append(id);
-        sb.append(", roleId=").append(roleId);
-        sb.append(", resourceId=").append(resourceId);
-        sb.append("]");
+        final StringBuffer sb = new StringBuffer("RoleResource{");
+        sb.append("id=").append(id);
+        sb.append(", roleId='").append(roleId).append('\'');
+        sb.append(", resourceId='").append(resourceId).append('\'');
+        sb.append('}');
         return sb.toString();
     }
 }
