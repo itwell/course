@@ -32,7 +32,7 @@ public class RoleResourceService {
      */
     public void list(PageDto pageDto) {
         //分页
-        PageHelper.startPage(pageDto.getPage(),pageDto.getSize());
+        PageHelper.startPage(pageDto.getPage(), pageDto.getSize());
 
         RoleResourceExample roleResourceExample = new RoleResourceExample();
         List<RoleResource> roleResourceList = roleResourceMapper.selectByExample(roleResourceExample);
@@ -41,45 +41,45 @@ public class RoleResourceService {
         pageDto.setTotal(pageInfo.getTotal());
 
         List<RoleResourceDto> RoleResourceDtoList = new ArrayList<RoleResourceDto>();
-                for (int i = 0; i < roleResourceList.size(); i++) {
-                RoleResource roleResource = roleResourceList.get(i);
-                RoleResourceDto roleResourceDto = new RoleResourceDto();
-                BeanUtils.copyProperties(roleResource,roleResourceDto);
-                RoleResourceDtoList.add(roleResourceDto);
-                }
-                pageDto.setList(RoleResourceDtoList);
+        for (int i = 0; i < roleResourceList.size(); i++) {
+            RoleResource roleResource = roleResourceList.get(i);
+            RoleResourceDto roleResourceDto = new RoleResourceDto();
+            BeanUtils.copyProperties(roleResource, roleResourceDto);
+            RoleResourceDtoList.add(roleResourceDto);
+        }
+        pageDto.setList(RoleResourceDtoList);
     }
 
     /**
-    * 保存，id有值时更新，无值时新增
-    */
+     * 保存，id有值时更新，无值时新增
+     */
     public void save(RoleResourceDto roleResourceDto) {
         RoleResource roleResource = CopyUtil.copy(roleResourceDto, RoleResource.class);
-        if(StringUtils.isEmpty(roleResourceDto.getId())){
-        this.insert(roleResource);
-        }else {
-        this.update(roleResource);
+        if (StringUtils.isEmpty(roleResourceDto.getId())) {
+            this.insert(roleResource);
+        } else {
+            this.update(roleResource);
         }
     }
 
     /**
-    * 新增
-    */
+     * 新增
+     */
     private void insert(RoleResource roleResource) {
         roleResource.setId(null);
         roleResourceMapper.insert(roleResource);
     }
 
     /**
-    * 更新
-    */
+     * 更新
+     */
     private void update(RoleResource roleResource) {
         roleResourceMapper.updateByPrimaryKey(roleResource);
     }
 
     /**
-    * 删除
-    */
+     * 删除
+     */
     public void delete(String id) {
         roleResourceMapper.deleteByPrimaryKey(id);
     }
