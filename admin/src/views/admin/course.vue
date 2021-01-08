@@ -259,7 +259,7 @@
                 COURSE_CHARGE: COURSE_CHARGE,
                 COURSE_STATUS: COURSE_STATUS,
                 FILE_USE: FILE_USE,
-                Categorys: [],
+                categorys: [],
                 tree:{},
                 saveContentLabel: "",
                 saveContentInterval: {},
@@ -278,7 +278,7 @@
             _this.$refs.pagination.size = 5;
             _this.allCategory();
             _this.allTeacher();
-            _this.initTree();
+
             _this.list(1);
         },
         methods: {
@@ -413,6 +413,7 @@
                     /*接口返回的data是ChapterDto*/
                     let resp = response.data;
                     _this.categorys = resp.content;
+                  console.log( _this.categorys)
                     //查到所有分类以后,把树展开
                     _this.initTree();
                 })
@@ -437,18 +438,22 @@
             initTree() {
                 let _this = this;
                 let setting = {
+                  check: {
+                    enable: true
+                  },
                     data: {
                         simpleData: {
-                            idKey: "id",
-                            pIdKey: "parent",
-                            rootPId: "",
-                            // enable: true
+                          idKey: "id",
+                          pIdKey: "parent",
+                          rootPId: "00000000",
+                          enable: true
                         }
                     }
                 };
-
-                _this.zTree = $.fn.zTree.init($("#tree"), setting, _this.resources);
-                _this.zTree.expandAll(true);
+                //对节点赋值
+                let zNodes = _this.categorys;
+                _this.tree = $.fn.zTree.init($("#tree"), setting, zNodes);
+                // _this.tree.expandAll(true);
             },
 
             /**
