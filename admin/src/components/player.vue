@@ -70,12 +70,24 @@
                         encryptType:1, //当播放私有加密流时需要设置。
                     },function(player){
                         console.log('播放器创建好了。')
+                      //关闭流
+                      $("#player-modal").on('hide.bs.modal', function () {
+                        _this.closeVod();
+                      });
                     });
                 } else {
                     Toast.warning('播放错误。')
                 }
             })
 
+        },
+        //关闭视频流
+        closeVod() {
+          let _this = this;
+          //关闭之前检查是否存在
+          if (_this.aliPlayer._duration !== 0 && _this.aliPlayer._duration !== undefined) {
+            _this.aliPlayer.dispose();
+          }
         }
     }
   }
